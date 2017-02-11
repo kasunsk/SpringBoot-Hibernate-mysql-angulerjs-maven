@@ -1,0 +1,26 @@
+.menu-list{
+    padding-left: 30px;
+    padding-top: 20px;
+}
+.home-section{
+    float:left;
+    width: 10%;
+}
+.section{
+    margin-left: 10%;
+    float:left;
+    color: #000;
+}
+.photo{
+    padding-right: 5px;
+}
+
+.form-control{
+    float: left;
+    width:10%;
+}
+
+.form-group {
+    margin-left: 10%;
+    width:20%;
+}
