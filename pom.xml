@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.crossover.techtrial.java.se</groupId>
-	<artifactId>trial</artifactId>
+	<groupId>com.kasun.airline</groupId>
+	<artifactId>airline-services</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -47,12 +47,6 @@
         </dependency>
 
 		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>angularjs</artifactId>
 			<version>1.4.9</version>
@@ -69,6 +63,7 @@
 			<groupId>org.webjars.bower</groupId>
 			<artifactId>angular-cookies</artifactId>
 			<version>1.4.5</version>
+			<scope>runtime</scope>
 		</dependency>
 
 
@@ -76,6 +71,7 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>angularjs-toaster</artifactId>
 			<version>0.4.7</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
