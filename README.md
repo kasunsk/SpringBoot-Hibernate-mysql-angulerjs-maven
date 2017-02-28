@@ -1,5 +1,5 @@
-Spring Boot, Hibernate, Mysql, Maven, AngulerJS
-===============================================
+Spring Boot, Hibernate, Mysql, Maven, Gradle, AngulerJS
+=======================================================
 
 Set up Gide
 -----------
