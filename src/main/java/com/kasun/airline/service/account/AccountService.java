@@ -1,8 +1,10 @@
 package com.kasun.airline.service.account;
 
+import com.kasun.airline.common.dto.Price;
 import com.kasun.airline.dto.account.DepositRequest;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.dto.account.MoneyTransferRequest;
+import com.kasun.airline.model.account.Currency;
 
 import java.util.List;
 
@@ -24,4 +26,6 @@ public interface AccountService {
     List<BankAccount> loadAllAccounts(String applicantId);
 
     void removeAccount(String accountId);
+
+    Price moneyExchange(Price amount, Currency toCurrency);
 }

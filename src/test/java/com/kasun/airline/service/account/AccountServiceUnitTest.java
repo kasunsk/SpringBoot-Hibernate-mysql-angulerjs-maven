@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by kasun on 2/6/17.
  */
-public class BankAccountServiceUnitTest {
+public class AccountServiceUnitTest {
 
     @InjectMocks
     AccountService accountService = new AccountServiceImpl();

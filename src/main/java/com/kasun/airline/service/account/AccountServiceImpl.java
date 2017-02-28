@@ -6,6 +6,7 @@ import com.kasun.airline.dto.account.AccountResponse;
 import com.kasun.airline.dto.account.DepositRequest;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.dto.account.MoneyTransferRequest;
+import com.kasun.airline.model.account.Currency;
 import com.kasun.airline.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,13 +32,12 @@ public class AccountServiceImpl implements AccountService {
 
         validateAccount(bankAccount);
         BankAccount account = accountHibernateDao.createAccount(bankAccount);
-        makeBankAccountRespons(account);
+        makeBankAccountResponse(account);
         return account;
     }
 
-    private void makeBankAccountRespons(BankAccount account) {
+    private void makeBankAccountResponse(BankAccount account) {
 
-        //account.getUser().setPassword(null);
         account.getUser().setUserBankAccounts(null);
     }
 
@@ -100,17 +100,29 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public List<BankAccount> loadAllAccounts(String applicantId) {
-        //User user = userService.loadUserById(applicantId);
         return accountHibernateDao.loadAccountByApplicantId(applicantId);
-        //return user.getUserBankAccounts();
     }
 
     @Transactional
     @Override
     public void removeAccount(String accountId) {
-
         accountHibernateDao.removeAccount(accountId);
+    }
 
+    @Override
+    public Price moneyExchange(Price amount, Currency toCurrency) {
+
+        Currency fromCurrencyCode = amount.getCurrency();
+        double conversionRate = CurrencyConverter.convert(fromCurrencyCode.toString(), toCurrency.toString());
+        double convertedAmount = conversionRate * amount.getPrice();
+        return buildConvertedPrice(toCurrency, convertedAmount);
+    }
+
+    private Price buildConvertedPrice(Currency toCurrency, double convertedAmount) {
+        Price convertedPrice = new Price();
+        convertedPrice.setPrice(convertedAmount);
+        convertedPrice.setCurrency(toCurrency);
+        return convertedPrice;
     }
 
     private AccountResponse getAccountResponse(BankAccount acc) {
