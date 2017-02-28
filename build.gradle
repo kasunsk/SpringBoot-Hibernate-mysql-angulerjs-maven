@@ -1,0 +1,40 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'gs-spring-boot'
+    version = '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-test")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("mysql:mysql-connector-java")
+    compile("com.sun.mail:javax.mail:" + javaxMailVersion)
+
+    runtime("org.webjars:angularjs:" + angulerjsVersion)
+    runtime("org.webjars:bootstrap:" + boostrapVersion)
+    runtime("org.webjars.bower:angular-cookies:" + bowerVersion)
+    runtime("org.webjars:angularjs-toaster:" + toasterVersion)
+
+    testCompile("org.testng:testng:" + testngVersion)
+}
