@@ -1,41 +1,70 @@
 package com.crossover.techtrial.java.se.dao.account;
 
 import com.crossover.techtrial.java.se.dao.AbstractDao;
-import com.crossover.techtrial.java.se.model.account.Account;
-import org.hibernate.criterion.Example;
+import com.crossover.techtrial.java.se.model.account.BankAccount;
+import com.crossover.techtrial.java.se.model.user.UserTicket;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created by kasun on 2/4/17.
  */
 @Repository
-public class AccountHibernateDao extends AbstractDao<Long,Account> implements AccountDao {
+public class AccountHibernateDao extends AbstractDao<Long, BankAccount> implements AccountDao {
 
-    public Account loadAccountByApplicantId(String applicantId) {
-        return null;
+    @SuppressWarnings("uncheked")
+    public List<BankAccount> loadAccountByApplicantId(String applicantId) {
+
+        Query query = getSession().createQuery("from BankAccount where USER_ID=:applicantId");
+        query.setString("applicantId", applicantId);
+        return query.list();
     }
 
-    public Account loadAccountById(Long accountId) {
-        return null;
+    public BankAccount loadAccountById(Long accountId) {
+
+        Query query = getSession().createQuery("from BankAccount where accountId=:accountId");
+        query.setParameter("accountId", accountId);
+        return (BankAccount) query.uniqueResult();
     }
 
-    public Account loadAccountByAccountNumber(String accountNumber) {
-        Account account = new Account();
-        account.setAccountNumber(accountNumber);
-        account = (Account)getSession().createCriteria(Account.class).add(Example.create(account)).uniqueResult();
-        return account;
+    public BankAccount loadAccountByAccountNumber(String accountNumber) {
+
+        Query query = getSession().createQuery("from BankAccount where accountId=:accountId");
+        query.setParameter("accountId", Long.parseLong(accountNumber));
+        return (BankAccount) query.uniqueResult();
     }
 
-    public void updateAccount(Account applicantAccount) {
+    public void updateAccount(BankAccount applicantBankAccount) {
 
+        getSession().update(applicantBankAccount);
     }
 
-    public void createAccount(Account account) {
-        getSession().save(account);
+    public BankAccount createAccount(BankAccount bankAccount) {
+        getSession().save(bankAccount);
+        return (bankAccount);
     }
 
-    public void deleteAccount(Account account) {
-        getSession().delete(account);
+    public void deleteAccount(BankAccount bankAccount) {
+        getSession().delete(bankAccount);
+    }
+
+    @Override
+    public void saveUserTicket(UserTicket userTicket) {
+        getSession().save(userTicket);
+    }
+
+    @Override
+    public void removeAccount(String accountId) {
+
+        //BankAccount account = loadAccountByAccountNumber(accountId);
+        //getSession().delete(account);
+
+        Query query = getSession().createSQLQuery("delete from BANK_ACCOUNT where ID=:accountId");
+        query.setParameter("accountId", accountId);
+        query.executeUpdate();
     }
 
 }

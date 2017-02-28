@@ -1,13 +1,18 @@
 package com.crossover.techtrial.java.se.controller;
 
-import com.crossover.techtrial.java.se.dto.AirlineOffer;
-import com.crossover.techtrial.java.se.dto.OfferRequest;
-import com.crossover.techtrial.java.se.dto.TicketBuyingRequest;
+import com.crossover.techtrial.java.se.common.dto.EmailRequest;
+import com.crossover.techtrial.java.se.dto.airline.AirlineOffer;
+import com.crossover.techtrial.java.se.dto.airline.AirlineTicket;
+import com.crossover.techtrial.java.se.dto.airline.OfferRequest;
+import com.crossover.techtrial.java.se.dto.airline.TicketBuyingRequest;
+import com.crossover.techtrial.java.se.model.user.UserTicket;
 import com.crossover.techtrial.java.se.service.airline.AirlineService;
+import com.crossover.techtrial.java.se.service.email.EmailService;
+import com.crossover.techtrial.java.se.service.user.UserService;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,18 +27,22 @@ public class AirlineController {
     @Autowired
     private AirlineService airlineService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
+
     @RequestMapping(value = "/{applicantId}/gammaairlines/offers", method = RequestMethod.GET)
-    public String retrieveAvailableOffers(@PathVariable("applicantId") String applicantId,
+    @ResponseBody
+    public  List<AirlineOffer> retrieveAvailableOffers(@PathVariable("applicantId") String applicantId,
                                                       ModelMap model) {
         OfferRequest offerRequest = new OfferRequest();
         offerRequest.setApplicantId(applicantId);
-        List<AirlineOffer> offers = airlineService.retrieveAvailableAirlineOffers(offerRequest);
-        model.addAttribute("offers", offers);
-        model.addAttribute("edit", false);
-        return "offerlist";
+        return airlineService.retrieveAvailableAirlineOffers(offerRequest);
     }
 
-    @RequestMapping(value = "/gammaairlines/offers/new", method = RequestMethod.POST,
+    @RequestMapping(value = "/gammaairlines/offers/save", method = RequestMethod.POST,
             consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
     public Boolean createOffers(@RequestBody AirlineOffer airlineOffer) {
@@ -42,29 +51,51 @@ public class AirlineController {
         return Boolean.TRUE;
     }
 
-    @RequestMapping(value = "/{applicantId}/gammaairlines/tickets", method = RequestMethod.POST,
+    @RequestMapping(value = "/{applicantId}/gammaairlines/tickets", method = RequestMethod.GET,
             consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
-    public Boolean retrieveApplicantTickets(@RequestBody AirlineOffer airlineOffer) {
+    public List<UserTicket> retrieveApplicantTickets(@PathVariable("applicantId") String applicantId) {
 
-        airlineService.createAirlineOffer(airlineOffer);
-        return Boolean.TRUE;
+        return airlineService.retrieveApplicantTickets(applicantId);
     }
 
 
-    @RequestMapping(value = "/gammaairlines/offers/buy", method = RequestMethod.POST,
+    @RequestMapping(value = "/{applicantId}/gammaairlines/offers/buy", method = RequestMethod.POST,
             consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
-    public Boolean buyAOffer(@RequestBody TicketBuyingRequest buyingRequest) {
+    public Boolean buyAOffer(@PathVariable("applicantId") String applicantId,@RequestBody TicketBuyingRequest buyingRequest) {
 
-        airlineService.buyAirlineTicket(buyingRequest);
+        validateUser(applicantId);
+        airlineService.buyAirlineTicket(buyingRequest, applicantId);
         return Boolean.TRUE;
     }
 
-    @RequestMapping("/hello")
-    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
-        model.addAttribute("name", name);
-        return "hello";
+    @RequestMapping(value = "/gammaairlines/country/all", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> loadAllCountries() {
+
+        return airlineService.allAirports();
+    }
+
+    @RequestMapping(value = "/gammaairlines/offer/remove/{offerId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Boolean loadAllCountries(@PathVariable("offerId") String offerId) {
+
+         airlineService.removeAirlineOffer(offerId);
+        return Boolean.TRUE;
+    }
+
+    @RequestMapping(value = "/gammaairlines/email/send", method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean sendEmail(@RequestBody EmailRequest emailRequest) {
+
+        emailService.sendEmail(emailRequest);
+        return Boolean.TRUE;
+    }
+
+    private void validateUser(String applicantId) {
+
+        userService.authenticateUser(applicantId);
     }
 
 }

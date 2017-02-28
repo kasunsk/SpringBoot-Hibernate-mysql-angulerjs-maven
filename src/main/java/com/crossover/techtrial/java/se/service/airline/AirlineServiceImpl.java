@@ -2,21 +2,29 @@ package com.crossover.techtrial.java.se.service.airline;
 
 import com.crossover.techtrial.java.se.adapter.airline.AirlineOfferAdapter;
 import com.crossover.techtrial.java.se.common.dto.Price;
+import com.crossover.techtrial.java.se.common.dto.ServiceRequest;
+import com.crossover.techtrial.java.se.common.dto.ServiceResponse;
+import com.crossover.techtrial.java.se.common.dto.UserTicketStatus;
+import com.crossover.techtrial.java.se.common.execption.ErrorCode;
+import com.crossover.techtrial.java.se.common.execption.ServiceRuntimeException;
+import com.crossover.techtrial.java.se.common.service.RequestAssembler;
+import com.crossover.techtrial.java.se.dao.airline.AirlineHibernateDao;
 import com.crossover.techtrial.java.se.dao.account.AccountDao;
 import com.crossover.techtrial.java.se.dao.airline.AirlineDao;
-import com.crossover.techtrial.java.se.dao.airline.AirlineHibernateDao;
-import com.crossover.techtrial.java.se.dto.AirlineOffer;
-import com.crossover.techtrial.java.se.dto.AirlineTicket;
-import com.crossover.techtrial.java.se.dto.OfferRequest;
-import com.crossover.techtrial.java.se.dto.TicketBuyingRequest;
-import com.crossover.techtrial.java.se.model.account.Account;
+import com.crossover.techtrial.java.se.dto.airline.*;
+import com.crossover.techtrial.java.se.logic.UserAllTicketsLogic;
+import com.crossover.techtrial.java.se.model.account.BankAccount;
 import com.crossover.techtrial.java.se.model.airline.AirlineOfferModel;
 import com.crossover.techtrial.java.se.model.airline.Route;
+import com.crossover.techtrial.java.se.model.user.UserTicket;
 import com.crossover.techtrial.java.se.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.crossover.techtrial.java.se.util.ValidationUtil.validate;
@@ -39,12 +47,21 @@ public class AirlineServiceImpl implements AirlineService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserAllTicketsLogic userAllTicketsLogic;
+
     @Transactional
     public void createAirlineOffer(AirlineOffer airlineOffer) {
 
         validateAirlineOffer(airlineOffer);
         AirlineOfferModel offerModel = offerAdapter.adaptFromDto(airlineOffer);
         airlineDao.saveAirlineOffer(offerModel);
+    }
+
+    @Transactional
+    @Override
+    public void removeAirlineOffer(String airlineOfferId) {
+        airlineDao.remove(airlineOfferId);
     }
 
     @Transactional
@@ -60,53 +77,101 @@ public class AirlineServiceImpl implements AirlineService {
     }
 
     @Transactional
-    public List<AirlineTicket> retrieveApplicantTicket(String applicantId) {
+    public List<UserTicket> retrieveApplicantTickets(String applicantId) {
 
-        return null;
+        List<UserTicket> userTickets = airlineDao.loadApplicantAirlineOffers(Long.parseLong(applicantId));
+        return userTickets;
     }
 
     @Transactional
-    public void buyAirlineTicket(TicketBuyingRequest request) {
+    public void buyAirlineTicket(TicketBuyingRequest request, String applicantId) {
 
-        Account applicantAccount = accountDao.loadAccountById(Long.parseLong(request.getApplicantId()));
-        Double availableAmount = applicantAccount.getAmount();
-        AirlineOffer airlineOffer = loadOfferByRout(request.getAirlineRout());
+        BankAccount applicantBankAccount = accountDao.loadAccountById(Long.parseLong(request.getAccountId()));
+        Double availableAmount = applicantBankAccount.getAvailableAmount();
+        AirlineOfferModel airlineOffer = loadOfferByRout(request.getAirlineRout());
         validateAirlineOfferInventoryAvailability(airlineOffer, request);
-        Price price = calculatePaymentAmount(availableAmount, airlineOffer.getPrice(), request.getTicketAmount());
-        processPayment(price, applicantAccount);
+        Price offerPrice = getOfferPrice(airlineOffer);
+        Price price = calculatePaymentAmount(availableAmount, offerPrice, request.getTicketAmount());
+        processPayment(price, applicantBankAccount);
+
+        UserTicket userTicket = getUserTicket(applicantId, airlineOffer);
+        accountDao.saveUserTicket(userTicket);
         updateInventory(airlineOffer, request);
-    }
-
-    private void updateInventory(AirlineOffer airlineOffer, TicketBuyingRequest request) {
-
-        Integer newAvailableInventory = airlineOffer.getAvailableInventory() - request.getTicketAmount();
-        airlineOffer.setAvailableInventory(newAvailableInventory);
-        airlineDao.updateAirlineOffer(offerAdapter.adaptFromDto(airlineOffer));
 
     }
 
-    private void processPayment(Price price, Account applicantAccount) {
+    private Price getOfferPrice(AirlineOfferModel airlineOffer) {
 
-        Double newAccountBalance = applicantAccount.getAmount() - price.getPrice();
-        applicantAccount.setAmount(newAccountBalance);
-        accountDao.updateAccount(applicantAccount);
+        Price price = new Price();
+        price.setPrice(airlineOffer.getPrice());
+        price.setCurrency(airlineOffer.getCurrency());
+        return price;
     }
 
-    protected void validateAirlineOfferInventoryAvailability(AirlineOffer airlineOffer, TicketBuyingRequest request) {
+    @Transactional
+    @Override
+    public List<String> allAirports() {
+        return airlineDao.loadAllAirports();
+    }
 
-        Integer availableInventory = airlineOffer.getAvailableInventory();
+    @Override
+    public ServiceResponse<List<UserTicket>> usersTickets(ServiceRequest<String> applicantId) {
+
+        return RequestAssembler.assemble(userAllTicketsLogic, applicantId);
+    }
+
+    private UserTicket getUserTicket(String applicantId, AirlineOfferModel airlineOffer) {
+        UserTicket userTicket = new UserTicket();
+        userTicket.setUserId(Long.parseLong(applicantId));
+        userTicket.setOfferId(airlineOffer.getOfferId());
+        userTicket.setStatus(UserTicketStatus.BOUGHT);
+        userTicket.setDestination(airlineOffer.getDestination());
+        userTicket.setOrigin(airlineOffer.getOrigin());
+        userTicket.setPrice(airlineOffer.getPrice());
+        userTicket.setCurrency(airlineOffer.getCurrency());
+        return userTicket;
+    }
+
+    private void updateInventory(AirlineOfferModel airlineOffer, TicketBuyingRequest request) {
+
+        Integer newAvailableInventory = airlineOffer.getAvailbaleInventory() - request.getTicketAmount();
+        airlineOffer.setAvailbaleInventory(newAvailableInventory);
+        airlineDao.updateAirlineOffer(airlineOffer);
+
+    }
+
+    private void processPayment(Price price, BankAccount applicantBankAccount) {
+
+        Double newAccountBalance = applicantBankAccount.getAvailableAmount() - price.getPrice();
+        applicantBankAccount.setAvailableAmount(newAccountBalance);
+        accountDao.updateAccount(applicantBankAccount);
+    }
+
+    protected void validateAirlineOfferInventoryAvailability(AirlineOfferModel airlineOffer, TicketBuyingRequest request) {
+
+        Integer availableInventory = airlineOffer.getAvailbaleInventory();
 
         if (availableInventory < request.getTicketAmount()) {
-            throw new RuntimeException("No enough inventory for Airline Offer ");
+            throw new ServiceRuntimeException(ErrorCode.NO_ENOUGH_INV, "No enough inventory for Airline Offer ");
         }
     }
 
     private Price calculatePaymentAmount(Double availableAmount, Price price, Integer ticketAmount) {
-        return null;
+
+        BigDecimal payableAmount = BigDecimal.valueOf(price.getPrice()).add(new BigDecimal(ticketAmount));
+
+        if (BigDecimal.valueOf(availableAmount).compareTo(payableAmount) == -1) {
+            throw new RuntimeException();
+        }
+
+        Price amount = new Price();
+        amount.setCurrency(price.getCurrency());
+        amount.setPrice(payableAmount.doubleValue());
+        return amount;
     }
 
-    private AirlineOffer loadOfferByRout(Route airlineRout) {
-        return null;
+    private AirlineOfferModel loadOfferByRout(Route airlineRout) {
+        return airlineDao.loadOfferByRoute(airlineRout.getFrom(), airlineRout.getTo());
     }
 
     private void validateAirlineOffer(AirlineOffer airlineOffer) {

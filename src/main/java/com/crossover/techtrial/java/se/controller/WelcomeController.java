@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class WelcomeController {
 
-    /*
-* This method will provide the medium to login.
-*/
-    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcome(ModelMap model) {
         return "index";
     }

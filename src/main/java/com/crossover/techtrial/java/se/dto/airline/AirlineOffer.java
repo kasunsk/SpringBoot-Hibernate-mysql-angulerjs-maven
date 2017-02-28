@@ -1,4 +1,4 @@
-package com.crossover.techtrial.java.se.dto;
+package com.crossover.techtrial.java.se.dto.airline;
 
 import com.crossover.techtrial.java.se.common.dto.Price;
 import com.crossover.techtrial.java.se.model.airline.Route;
@@ -10,7 +10,7 @@ import com.crossover.techtrial.java.se.model.airline.Route;
 public class AirlineOffer {
 
     public enum AirlineOfferStatus {
-        AVAILABLE, CANCELED, FINISHED
+        AVAILABLE, NOT_AVAILABLE, CANCELED, FINISHED
     }
 
     private Long offerId;

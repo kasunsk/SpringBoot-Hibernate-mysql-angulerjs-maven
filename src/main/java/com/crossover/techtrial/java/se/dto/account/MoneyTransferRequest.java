@@ -1,4 +1,4 @@
-package com.crossover.techtrial.java.se.dto;
+package com.crossover.techtrial.java.se.dto.account;
 
 /**
  * Created by kasun on 2/4/17.

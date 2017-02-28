@@ -1,21 +1,28 @@
 package com.crossover.techtrial.java.se.dao.account;
 
-import com.crossover.techtrial.java.se.model.account.Account;
+import com.crossover.techtrial.java.se.model.account.BankAccount;
+import com.crossover.techtrial.java.se.model.user.UserTicket;
+
+import java.util.List;
 
 /**
  * Created by kasun on 2/4/17.
  */
 public interface AccountDao {
 
-    Account loadAccountByApplicantId(String applicantId);
+    List<BankAccount> loadAccountByApplicantId(String applicantId);
 
-    Account loadAccountById(Long accountId);
+    BankAccount loadAccountById(Long accountId);
 
-    Account loadAccountByAccountNumber(String accountNumber);
+    BankAccount loadAccountByAccountNumber(String accountNumber);
 
-    void updateAccount(Account applicantAccount);
+    void updateAccount(BankAccount applicantBankAccount);
 
-    void createAccount(Account account);
+    BankAccount createAccount(BankAccount bankAccount);
     
-    void deleteAccount(Account account);
+    void deleteAccount(BankAccount bankAccount);
+
+    void saveUserTicket(UserTicket userTicket);
+
+    void removeAccount(String accountId);
 }

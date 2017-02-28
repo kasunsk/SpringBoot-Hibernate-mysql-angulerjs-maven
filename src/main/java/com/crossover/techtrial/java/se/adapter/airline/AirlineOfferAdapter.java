@@ -1,7 +1,7 @@
 package com.crossover.techtrial.java.se.adapter.airline;
 
 import com.crossover.techtrial.java.se.common.dto.Price;
-import com.crossover.techtrial.java.se.dto.AirlineOffer;
+import com.crossover.techtrial.java.se.dto.airline.AirlineOffer;
 import com.crossover.techtrial.java.se.model.airline.AirlineOfferModel;
 import com.crossover.techtrial.java.se.model.airline.Route;
 import org.springframework.stereotype.Component;

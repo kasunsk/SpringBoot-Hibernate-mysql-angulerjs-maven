@@ -1,20 +1,21 @@
 package com.crossover.techtrial.java.se.controller;
 
-import com.crossover.techtrial.java.se.dto.LoginRequest;
-import com.crossover.techtrial.java.se.model.user.User;
+import com.crossover.techtrial.java.se.dto.user.LoginRequest;
+import com.crossover.techtrial.java.se.dto.user.UserRole;
+import com.crossover.techtrial.java.se.common.dto.UserSearchCriteria;
 import com.crossover.techtrial.java.se.service.user.UserService;
+import com.crossover.techtrial.java.se.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.crossover.techtrial.java.se.util.ValidationUtil.validate;
 
 /**
  * Created by kasun on 1/28/17.
@@ -30,9 +31,9 @@ public class UserController {
     @Autowired
     MessageSource messageSource;
 
-  /*
- * This method will provide the medium to add a new user.
- */
+    /*
+   * This method will provide the medium to add a new user.
+   */
     @RequestMapping(value = {"/new"}, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         User user = new User();
@@ -42,55 +43,59 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
-    public String allUsers(ModelMap model) {
+    @ResponseBody
+    public List<User> allUsers() {
         List<User> users = userService.retrieveAllUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("edit", false);
-        return "allusers";
+        return users;
     }
 
-    @RequestMapping(value = { "/login" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/remove/{userId}"}, method = RequestMethod.GET)
     @ResponseBody
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public Boolean removeUser(@PathVariable("userId") String userId) {
+        userService.removeUser(userId);
+        return Boolean.TRUE;
+    }
+
+    @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
+    @ResponseBody
+    public User login(@RequestBody LoginRequest loginRequest) {
 
         validateLoginRequest(loginRequest);
         return userService.login(loginRequest);
     }
 
+    @RequestMapping(value = {"/{applicantId}/search"}, method = RequestMethod.POST)
+    @ResponseBody
+    public List<User> searchUser(@PathVariable("applicantId") String applicantId, @RequestBody UserSearchCriteria searchCriteria) {
+
+        User user = userService.loadUserById(applicantId);
+
+        if (user.getRole() != UserRole.ADMIN) {
+            throw new RuntimeException("User not have enough privileges");
+        }
+        return userService.searchUser(searchCriteria);
+    }
+
     private void validateLoginRequest(LoginRequest loginRequest) {
 
+        validate(loginRequest.getEmail(), "Email is empty");
+        validate(loginRequest.getPassword(), "Email is empty");
     }
 
 
-    @RequestMapping(value = { "/save" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/save"}, method = RequestMethod.POST)
     @ResponseBody
-    public String saveUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public Boolean saveUser(@RequestBody User user) {
+        userService.saveUser(user);
+        return Boolean.TRUE;
     }
 
-    /*
- * This method will be called on form submission, handling POST request for
- * saving user in database. It also validates the user input
- */
-    @RequestMapping(value = { "/new" }, method = RequestMethod.POST)
-    public String saveEmployee(@Valid User user, BindingResult result,
-                               ModelMap model) {
+    @RequestMapping(value = {"/new"}, method = RequestMethod.POST)
+    public String saveUser(@Valid User user, BindingResult result,
+                           ModelMap model) {
 
         if (result.hasErrors()) {
             return "registration";
-        }
-
-		/*
-		 *
-		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
-		 * framework as well while still using internationalized messages.
-		 *
-		 */
-        if(!userService.isUserNameUnique(user.getUserId(), user.getEmail())){
-
-//            FieldError ssnError =new FieldError("employee","ssn",messageSource.getMessage("non.unique.ssn", new String[]{user.getEmail()}, Locale.getDefault()));
-//            result.addError(ssnError);
-//            return "registration";
         }
 
         userService.saveUser(user);

@@ -1,11 +1,26 @@
 <div class="section">
     <h3>{{headingTitle}}</h3>
-    <div>
-        <ul type="square">
-            <li>Luke</li>
-            <li>Darth</li>
-            <li>Anakin</li>
-            <li>Leia</li>
-        </ul>
+
+    <div data-ng-controller="usersController" data-ng-init="userList();">
+        <table class="table">
+            <tr class="tr" data-ng-show="clicked">
+                <th>Index</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Delete</th>
+            </tr>
+            <tbody ng-repeat="user in allUsers">
+            <tr>
+                <td>{{$index + 1}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.role}}</td>
+                <td>
+                    <button class="btn btn-primary" data-ng-click="deleteUser($index);">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package com.crossover.techtrial.java.se.dao.user;
 
+import com.crossover.techtrial.java.se.common.dto.UserSearchCriteria;
 import com.crossover.techtrial.java.se.model.user.User;
 
 import java.util.List;
@@ -15,5 +16,9 @@ public interface UserDao {
 
     User loadUserByEmail(String email);
 
-    User getUserById(String applicantId);
+    User loadUserById(String applicantId);
+
+    List<User> searchUserByCriteria(UserSearchCriteria searchCriteria);
+
+    void remove(String userId);
 }

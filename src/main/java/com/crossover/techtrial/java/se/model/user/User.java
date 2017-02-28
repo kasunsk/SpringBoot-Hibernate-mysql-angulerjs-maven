@@ -1,17 +1,24 @@
 package com.crossover.techtrial.java.se.model.user;
 
+import com.crossover.techtrial.java.se.dto.user.UserRole;
+import com.crossover.techtrial.java.se.model.account.BankAccount;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by kasun on 1/28/17.
  */
 @Entity
-@Table(name="USER")
+@Table(name = "USER")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "USER_ID", nullable = false)
     private Long userId;
 
     @Column(name = "NAME", nullable = false)
@@ -23,8 +30,14 @@ public class User {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "USER_ROLE", nullable = false)
-    private Long roleId;
+    private UserRole role;
+
+    @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
+    private List<BankAccount> userBankAccounts;
 
     public Long getUserId() {
         return userId;
@@ -58,11 +71,19 @@ public class User {
         this.password = password;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public List<BankAccount> getUserBankAccounts() {
+        return userBankAccounts;
+    }
+
+    public void setUserBankAccounts(List<BankAccount> userBankAccounts) {
+        this.userBankAccounts = userBankAccounts;
     }
 }

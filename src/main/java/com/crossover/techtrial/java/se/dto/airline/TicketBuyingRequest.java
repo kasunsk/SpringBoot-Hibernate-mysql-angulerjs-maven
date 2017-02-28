@@ -1,4 +1,4 @@
-package com.crossover.techtrial.java.se.dto;
+package com.crossover.techtrial.java.se.dto.airline;
 
 import com.crossover.techtrial.java.se.model.airline.Route;
 
@@ -11,11 +11,11 @@ public class TicketBuyingRequest {
     private Integer ticketAmount;
     private Route airlineRout;
 
-    public String getApplicantId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setApplicantId(String accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 

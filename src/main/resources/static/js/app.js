@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute','ngResource']);
+var app = angular.module('app', ['ngRoute','ngResource', 'ngCookies']);
 app.config(function($routeProvider){
     $routeProvider
         .when('/users',{
@@ -16,6 +16,14 @@ app.config(function($routeProvider){
         .when('/register',{
             templateUrl: '/views/register.html',
             controller: 'registerController'
+        })
+        .when('/airlineOffer',{
+            templateUrl: '/views/airlineOffer.html',
+            controller: 'airlineOfferController'
+        })
+        .when('/accountCreate',{
+            templateUrl: '/views/accountCreate.html',
+            controller: 'accountCreateController'
         })
         .otherwise(
             { redirectTo: '/'}

@@ -1,6 +1,6 @@
 package com.crossover.techtrial.java.se.model.airline;
 
-import com.crossover.techtrial.java.se.dto.AirlineOffer;
+import com.crossover.techtrial.java.se.dto.airline.AirlineOffer;
 import com.crossover.techtrial.java.se.model.account.Currency;
 
 import javax.persistence.*;

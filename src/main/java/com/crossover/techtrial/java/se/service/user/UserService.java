@@ -1,7 +1,8 @@
 
 package com.crossover.techtrial.java.se.service.user;
 
-import com.crossover.techtrial.java.se.dto.LoginRequest;
+import com.crossover.techtrial.java.se.dto.user.LoginRequest;
+import com.crossover.techtrial.java.se.common.dto.UserSearchCriteria;
 import com.crossover.techtrial.java.se.model.user.User;
 
 import java.util.List;
@@ -15,9 +16,15 @@ public interface UserService {
 
     List<User> retrieveAllUsers();
 
+    void removeUser(String userId);
+
     Boolean isUserNameUnique(Long userId, String userName);
 
-    String login(LoginRequest loginRequest);
+    User login(LoginRequest loginRequest);
 
     void authenticateUser(String applicantId);
+
+    User loadUserById(String applicantId);
+
+    List<User> searchUser(UserSearchCriteria searchCriteria);
 }
