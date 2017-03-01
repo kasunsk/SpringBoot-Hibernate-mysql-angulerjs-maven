@@ -1,36 +1,32 @@
-var app = angular.module('app', ['ngRoute','ngResource', 'ngCookies']);
-app.config(function($routeProvider){
+var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies']);
+app.config(function ($routeProvider) {
     $routeProvider
-        .when('/users',{
+        .when('/users', {
             templateUrl: '/views/users.html',
             controller: 'usersController'
         })
-        .when('/roles',{
-            templateUrl: '/views/roles.html',
-            controller: 'rolesController'
-        })
-        .when('/login',{
+        .when('/login', {
             templateUrl: '/views/login.html',
             controller: 'loginController'
         })
-        .when('/register',{
+        .when('/register', {
             templateUrl: '/views/register.html',
             controller: 'registerController'
         })
-        .when('/airlineOffer',{
+        .when('/airlineOffer', {
             templateUrl: '/views/airlineOffer.html',
             controller: 'airlineOfferController'
         })
-        .when('/accountCreate',{
+        .when('/accountCreate', {
             templateUrl: '/views/accountCreate.html',
             controller: 'accountCreateController'
         })
-        .when('/myTickets',{
+        .when('/myTickets', {
             templateUrl: '/views/myTickets.html',
             controller: 'ticketController'
         })
         .otherwise(
-            { redirectTo: '/'}
-        );
+        {redirectTo: '/'}
+    );
 });
 

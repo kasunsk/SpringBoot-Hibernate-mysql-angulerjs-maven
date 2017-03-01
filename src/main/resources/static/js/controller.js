@@ -72,7 +72,7 @@ app.controller('ticketController', ['$scope', '$http', '$cookies', function ($sc
     };
 }]);
 
-app.controller('loginController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
+app.controller('loginController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
 
     $scope.headingTitle = "Login";
 
@@ -90,6 +90,16 @@ app.controller('loginController', ['$scope', '$http', '$cookies', function ($sco
         }).success(function (data) {
             $scope.submitting = false;
             $cookies.put('applicantId', data.userId);
+            $cookies.put('applicantName', data.name);
+            $cookies.put('applicantRole', data.role);
+            $window.location.href = 'homepage.html#/airlineOffer';
+            $scope.applicantName = data.name;
+
+            if (data.role == 'ADMIN') {
+                $scope.isAdmin = true;
+            } else {
+                $scope.isAdmin = false;
+            }
 
         }).error(function (data, status) {
             $scope.submitting = false;
@@ -100,10 +110,17 @@ app.controller('loginController', ['$scope', '$http', '$cookies', function ($sco
         });
     };
 
+    $scope.logout = function () {
+        $cookies.remove('applicantId');
+        $cookies.remove('applicantName');
+        $cookies.remove('applicantRole');
+        $window.location.href = '/index.html';
+    }
+
 }]);
 
 
-app.controller('registerController', ['$scope', '$http', function ($scope, $http) {
+app.controller('registerController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
     $scope.headingTitle = "Register";
 
     $scope.user = {
@@ -121,6 +138,7 @@ app.controller('registerController', ['$scope', '$http', function ($scope, $http
         }).success(function (data) {
             $scope.submitting = false;
             $scope.allUsers = data;
+            $window.location.href = '/index.html#/login';
 
         }).error(function (data, status) {
             $scope.submitting = false;
@@ -261,8 +279,15 @@ app.controller('accountCreateController', ['$scope', '$http', '$cookies', '$time
 app.controller('airlineOfferController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
     $scope.headingTitle = "Available Offers";
 
+    var applicantRole = $cookies.get('applicantRole');
     var applicantId = $cookies.get('applicantId');
     var requestUrl = '/' + applicantId + '/gammaairlines/offers';
+
+    if (applicantRole == 'ADMIN') {
+        $scope.isAdmin = true;
+    } else {
+        $scope.isAdmin = false;
+    }
 
     $scope.availableAirlineOffers = function () {
         $scope.submitting = true;
@@ -402,5 +427,20 @@ app.controller('airlineOfferController', ['$scope', '$http', '$cookies', functio
                 $scope.badRequest = '';
         });
     };
+}]);
+
+app.controller('homeController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
+
+    var applicantName = $cookies.get('applicantName');
+    var applicantRole = $cookies.get('applicantRole');
+
+    $scope.applicantName = applicantName;
+
+    if (applicantRole == 'ADMIN') {
+        $scope.isAdmin = true;
+    } else {
+        $scope.isAdmin = false;
+    }
+
 }]);
 

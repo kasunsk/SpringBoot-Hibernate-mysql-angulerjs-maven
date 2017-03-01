@@ -110,3 +110,7 @@ th {
     border-radius: 5px;
     box-shadow: 0 3px #999;
 }
+
+.logout {
+    margin-right: 10%;
+}

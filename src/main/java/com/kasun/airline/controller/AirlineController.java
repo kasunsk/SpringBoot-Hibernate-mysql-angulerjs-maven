@@ -4,6 +4,7 @@ import com.kasun.airline.common.dto.EmailRequest;
 import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
+import com.kasun.airline.model.airline.Airport;
 import com.kasun.airline.model.user.UserTicket;
 import com.kasun.airline.service.airline.AirlineService;
 import com.kasun.airline.service.email.EmailService;
@@ -69,7 +70,7 @@ public class AirlineController {
 
     @RequestMapping(value = "/gammaairlines/country/all", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> loadAllCountries() {
+    public List<Airport> loadAllCountries() {
 
         return airlineService.allAirports();
     }

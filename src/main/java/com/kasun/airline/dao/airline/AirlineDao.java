@@ -2,6 +2,7 @@ package com.kasun.airline.dao.airline;
 
 import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.model.airline.AirlineOfferModel;
+import com.kasun.airline.model.airline.Airport;
 import com.kasun.airline.model.user.UserTicket;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface AirlineDao {
 
     List<UserTicket> loadApplicantAirlineOffers(Long applicantId);
 
-    List<String> loadAllAirports();
+    List<Airport> loadAllAirports();
 
     void remove(String airlineOfferId);
 }

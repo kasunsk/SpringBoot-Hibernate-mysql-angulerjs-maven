@@ -3,6 +3,7 @@ package com.kasun.airline.dao.airline;
 import com.kasun.airline.dao.AbstractDao;
 import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.model.airline.AirlineOfferModel;
+import com.kasun.airline.model.airline.Airport;
 import com.kasun.airline.model.user.UserTicket;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -57,10 +58,11 @@ public class AirlineHibernateDao extends AbstractDao<Long, AirlineOfferModel> im
         return query.list();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public List<String> loadAllAirports() {
+    public List<Airport> loadAllAirports() {
 
-        SQLQuery sqlQuery = getSession().createSQLQuery("select COUNTRY from AIRPORTS");
+        Query sqlQuery = getSession().createQuery("from Airport");
         return sqlQuery.list();
     }
 

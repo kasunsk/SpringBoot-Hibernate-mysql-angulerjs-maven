@@ -15,6 +15,7 @@ import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.logic.UserAllTicketsLogic;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.model.airline.AirlineOfferModel;
+import com.kasun.airline.model.airline.Airport;
 import com.kasun.airline.model.airline.Route;
 import com.kasun.airline.model.user.UserTicket;
 import com.kasun.airline.service.user.UserService;
@@ -111,7 +112,7 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Transactional
     @Override
-    public List<String> allAirports() {
+    public List<Airport> allAirports() {
         return airlineDao.loadAllAirports();
     }
 

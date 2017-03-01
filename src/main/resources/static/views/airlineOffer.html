@@ -23,7 +23,7 @@
         <button class="button" data-ng-click="remove($index);">Remove</button>
     </div>
 </div>
-<div class="section">
+<div class="section" data-ng-show="isAdmin">
     <div data-ng-init="init();">
         <div>
             <label for="price">Price</label>
@@ -34,11 +34,11 @@
                     data-ng-options="currency for currency in currencies"></select>
             <label for="from">From</label>
             <select name="from" id="from" data-ng-model="offer.route.from" class="small_select"
-                    data-ng-options="airport for airport in availableAirports"></select>
+                    data-ng-options="airport.airportCode for airport in availableAirports"></select>
             <br>
             <label for="to">To</label>
             <select name="to" id="to" data-ng-model="offer.route.to" class="small_select"
-                    data-ng-options="airport for airport in availableAirports"></select>
+                    data-ng-options="airport.airportCode for airport in availableAirports"></select>
             <label for="availableInventory">Available Inv</label>
             <input type="text" name="availableInventory" id="availableInventory"
                    data-ng-model="offer.availableInventory"/>
