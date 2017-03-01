@@ -181,6 +181,11 @@ public class AirlineServiceImpl implements AirlineService {
         ValidationUtil.validate(airlineOffer, "Airline offer can not be null");
         ValidationUtil.validate(airlineOffer.getPrice(), "Price can not be null");
         ValidationUtil.validate(airlineOffer.getRoute(), "Route can not be null");
+        Route airlineOfferRoute = airlineOffer.getRoute();
+
+        if (airlineOfferRoute.getFrom().equals(airlineOfferRoute.getTo())) {
+            throw new ServiceRuntimeException(ErrorCode.INVALID_OFFER_ROUT, "Invalid route");
+        }
 
     }
 
