@@ -110,7 +110,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Price moneyExchange(Price amount, Currency toCurrency) {
+    public Price currencyExchange(Price amount, Currency toCurrency) {
 
         Currency fromCurrencyCode = amount.getCurrency();
         double conversionRate = CurrencyConverter.convert(fromCurrencyCode.toString(), toCurrency.toString());

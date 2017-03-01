@@ -1,5 +1,7 @@
 package com.kasun.airline.controller;
 
+import com.kasun.airline.common.dto.CurrencyExchangeRequest;
+import com.kasun.airline.common.dto.Price;
 import com.kasun.airline.dto.account.AccountRequest;
 import com.kasun.airline.dto.account.DepositRequest;
 import com.kasun.airline.model.account.BankAccount;
@@ -46,8 +48,7 @@ public class AccountController {
 
         validateUser(applicantId);
         validateAccount(applicantId);
-        BankAccount account = accountService.deposit(depositRequest);
-        return account;
+        return accountService.deposit(depositRequest);
     }
 
     @RequestMapping(value = "/{applicantId}/paypallets/account/withdraw", method = RequestMethod.POST,
@@ -73,6 +74,15 @@ public class AccountController {
 
         accountService.removeAccount(accountId);
         return Boolean.TRUE;
+    }
+
+    @RequestMapping(value = "/{applicantId}/moneyexchange/exchange", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Price moneyExchange(@PathVariable("applicantId") String applicantId, @RequestBody CurrencyExchangeRequest exchangeRequest) {
+
+        validateUser(applicantId);
+        return accountService.currencyExchange(exchangeRequest.getMonetaryAmount(), exchangeRequest.getTargetCurrency());
     }
 
     @RequestMapping(value = "/account/availableCurrency", method = RequestMethod.GET)

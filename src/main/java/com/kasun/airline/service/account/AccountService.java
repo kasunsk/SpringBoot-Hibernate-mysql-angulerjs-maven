@@ -27,5 +27,5 @@ public interface AccountService {
 
     void removeAccount(String accountId);
 
-    Price moneyExchange(Price amount, Currency toCurrency);
+    Price currencyExchange(Price amount, Currency toCurrency);
 }
