@@ -49,8 +49,7 @@ public class AirlineController {
         return Boolean.TRUE;
     }
 
-    @RequestMapping(value = "/{applicantId}/gammaairlines/tickets", method = RequestMethod.GET,
-            consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value = "/{applicantId}/gammaairlines/tickets", method = RequestMethod.GET)
     @ResponseBody
     public List<UserTicket> retrieveApplicantTickets(@PathVariable("applicantId") String applicantId) {
 

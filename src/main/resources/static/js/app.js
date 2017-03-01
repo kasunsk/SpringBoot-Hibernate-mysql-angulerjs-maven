@@ -25,6 +25,10 @@ app.config(function($routeProvider){
             templateUrl: '/views/accountCreate.html',
             controller: 'accountCreateController'
         })
+        .when('/myTickets',{
+            templateUrl: '/views/myTickets.html',
+            controller: 'ticketController'
+        })
         .otherwise(
             { redirectTo: '/'}
         );

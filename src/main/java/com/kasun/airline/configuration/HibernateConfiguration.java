@@ -19,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableTransactionManagement
-//@EnableWebMvc
 @ComponentScan({ "com.kasun.airline.configuration" })
 @PropertySource(value = { "classpath:application.properties" })
 public class HibernateConfiguration {

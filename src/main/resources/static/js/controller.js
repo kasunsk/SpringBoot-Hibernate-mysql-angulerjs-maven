@@ -46,6 +46,32 @@ app.controller('rolesController', function ($scope) {
     $scope.headingTitle = "Roles List";
 });
 
+app.controller('ticketController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
+    $scope.headingTitle = "My Tickets";
+
+    var applicantId = $cookies.get('applicantId');
+
+    $scope.getMyTickets = function () {
+
+        var myTicketUrl = '/' + applicantId + '/gammaairlines/tickets';
+
+        $scope.submitting = true;
+        $http({
+            method: 'GET',
+            url: myTicketUrl
+        }).success(function (data) {
+            $scope.myTickets = data;
+
+        }).error(function (data, status) {
+            $scope.submitting = false;
+            if (status === 400)
+                $scope.badRequest = data;
+            else if (status === 409)
+                $scope.badRequest = 'The name is already used.';
+        });
+    };
+}]);
+
 app.controller('loginController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
 
     $scope.headingTitle = "Login";
@@ -288,7 +314,7 @@ app.controller('airlineOfferController', ['$scope', '$http', '$cookies', functio
         });
     };
 
-    $scope.select = function(idx) {
+    $scope.select = function (idx) {
 
         $scope.offer_to_buy = $scope.availableOffers[idx];
         $scope.displayAccounts = true;
@@ -302,13 +328,13 @@ app.controller('airlineOfferController', ['$scope', '$http', '$cookies', functio
         //var offer_to_buy = $scope.availableOffers[idx];
         var rout_to_buy = $scope.offer_to_buy.route;
         var applicantId = $cookies.get('applicantId');
-        var accountId = ''+account.accountId;
+        var accountId = '' + account.accountId;
 
         var buyingRequest = {
 
-            accountId : accountId,
-            ticketAmount : 1,
-            airlineRout : rout_to_buy
+            accountId: accountId,
+            ticketAmount: 1,
+            airlineRout: rout_to_buy
 
         };
 
