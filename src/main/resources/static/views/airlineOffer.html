@@ -20,7 +20,7 @@
         <label>Available Inv : {{offer.availableInventory}}</label>
         <br>
         <button class="button" data-ng-click="select($index);">Select</button>
-        <button class="button" data-ng-click="remove($index);">Remove</button>
+        <button class="button" data-ng-show="isAdmin" data-ng-click="remove($index);">Remove</button>
     </div>
 </div>
 <div class="section" data-ng-show="isAdmin">
