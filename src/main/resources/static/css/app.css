@@ -64,7 +64,6 @@ th {
     outline: none
 }
 
-
 .small_select {
     width: 20%;
     background-color: #A2AB58;
@@ -85,6 +84,13 @@ th {
     background: #eee;
     position: relative;
     text-align: center;
+}
+
+.section_div {
+    margin-left: 10%;
+    width: 70%;
+    text-align: center;
+    position: relative;
 }
 
 .block {

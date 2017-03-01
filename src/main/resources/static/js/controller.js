@@ -151,7 +151,7 @@ app.controller('registerController', ['$scope', '$http', '$window', function ($s
 }]);
 
 app.controller('accountCreateController', ['$scope', '$http', '$cookies', '$timeout', function ($scope, $http, $cookies, $timeout) {
-    $scope.headingTitle = "Create Account";
+    $scope.headingTitle = "My Accounts";
     $scope.showSuccessAlert = false;
 
 

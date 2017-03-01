@@ -23,7 +23,8 @@
         <button class="button" data-ng-show="isAdmin" data-ng-click="remove($index);">Remove</button>
     </div>
 </div>
-<div class="section" data-ng-show="isAdmin">
+<div class="section_div" data-ng-show="isAdmin">
+    <label>Add new offer</label>
     <div data-ng-init="init();">
         <div>
             <label for="price">Price</label>
@@ -35,7 +36,6 @@
             <label for="from">From</label>
             <select name="from" id="from" data-ng-model="offer.route.from" class="small_select"
                     data-ng-options="airport.airportCode as airport.airportCode for airport in availableAirports"></select>
-            <br>
             <label for="to">To</label>
             <select name="to" id="to" data-ng-model="offer.route.to" class="small_select"
                     data-ng-options="airport.airportCode as airport.airportCode for airport in availableAirports"></select>
@@ -49,11 +49,11 @@
     </div>
 </div>
 
-<div class="section" data-ng-controller="accountCreateController" data-ng-show="displayAccounts" data-ng-init="accountList();">
+<div class="section_div" data-ng-controller="accountCreateController" data-ng-show="displayAccounts" data-ng-init="accountList();">
     <div>
         <label for="account">Account</label>
         <select name="account" id="account" data-ng-model="account" class="small_select"
-                data-ng-options="account.availableAmount for account in allAccounts"></select>
+                data-ng-options="account as account.availableAmount +' '+ account.currency for account in allAccounts"></select>
         <br>
         <button class="button" data-ng-click="buy(account);">Buy</button>
     </div>
