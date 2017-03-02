@@ -73,7 +73,11 @@ app.controller('ticketController', ['$scope', '$http', '$cookies', '$window', fu
 
     $scope.viewTicket = function (idx) {
 
-        $scope.userTicket = $scope.myTickets[idx];
+        if ($scope.myTickets != null) {
+            $scope.userTicket = $scope.myTickets[idx];
+        } else {
+            $scope.userTicket = $scope.usersTickets[idx];
+        }
         $window.location.href = '#/ticket';
     };
 }]);
@@ -443,6 +447,48 @@ app.controller('homeController', ['$scope', '$http', '$cookies', '$window', func
     } else {
         $scope.isAdmin = false;
     }
+}]);
+
+app.controller('usersTicketsController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
+    $scope.headingTitle = "Users Tickets";
+
+    var applicantId = $cookies.get('applicantId');
+    var applicantRole = $cookies.get('applicantRole');
+
+    if (applicantRole == 'ADMIN') {
+        $scope.isAdmin = true;
+    } else {
+        $scope.isAdmin = false;
+    }
+
+    $scope.loadUserTickets = function (userId) {
+
+        var userTicketsUrl = '/' + applicantId + '/gammaairlines/tickets/' + userId;
+
+        $scope.submitting = true;
+        $http({
+            method: 'GET',
+            url: userTicketsUrl,
+        }).success(function (data) {
+            $scope.submitting = false;
+            $scope.usersTickets = data;
+
+        }).error(function (data, status) {
+            $scope.submitting = false;
+            if (status === 400)
+                $scope.badRequest = data;
+            else if (status === 409)
+                $scope.badRequest = '';
+        });
+    };
 
 }]);
 
+app.controller('moneyExchangeController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
+
+    $scope.headingTitle = "Money Exchange";
+
+    var applicantId = $cookies.get('applicantId');
+    var applicantRole = $cookies.get('applicantRole');
+
+}]);

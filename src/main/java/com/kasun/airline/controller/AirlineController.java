@@ -90,6 +90,15 @@ public class AirlineController {
         return Boolean.TRUE;
     }
 
+    @RequestMapping(value = "/{applicantId}/gammaairlines/tickets/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<UserTicket> loadUsersTickers(@PathVariable("applicantId") String applicantId,@PathVariable("userId") String userId) {
+
+        validateUser(applicantId);
+        return airlineService.retrieveApplicantTickets(userId);
+    }
+
+
     private void validateUser(String applicantId) {
 
         userService.authenticateUser(applicantId);

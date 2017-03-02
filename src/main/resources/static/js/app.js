@@ -29,8 +29,15 @@ app.config(function ($routeProvider) {
             templateUrl: '/views/ticket.html',
             controller: 'ticketController'
         })
+        .when('/usersTickets', {
+            templateUrl: '/views/usersTickets.html',
+            controller: 'usersTicketsController'
+        })
+        .when('/moneyExchange', {
+            templateUrl: '/views/moneyExchange.html',
+            controller: 'moneyExchangeController'
+        })
         .otherwise(
         {redirectTo: '/'}
     );
 });
-
