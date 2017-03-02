@@ -48,7 +48,7 @@ public class AirlineServiceUnitTest {
         TicketBuyingRequest request = new TicketBuyingRequest();
         request.setTicketAmount(5);
 
-        airlineService.validateAirlineOfferInventoryAvailability(airlineOffer, request);
+        //airlineService.validateAirlineOfferInventoryAvailability(airlineOffer, request);
     }
 
 

@@ -4,6 +4,7 @@ import com.kasun.airline.common.dto.*;
 import com.kasun.airline.common.dto.Void;
 import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.OfferRequest;
+import com.kasun.airline.dto.airline.TicketBuy;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
 import com.kasun.airline.model.airline.Airport;
 import com.kasun.airline.model.user.UserTicket;
@@ -23,10 +24,7 @@ public interface AirlineService {
 
     ServiceResponse<List<UserTicket>> retrieveApplicantTickets(ServiceRequest<String> applicantId);
 
-    UserTicket buyAirlineTicket(TicketBuyingRequest request, String applicantId);
+    ServiceResponse<UserTicket> buyAirlineTicket(ServiceRequest<TicketBuy> request);
 
-    List<Airport> allAirports();
-
-    ServiceResponse<List<UserTicket>> usersTickets(ServiceRequest<String> applicantId);
-
+    ServiceResponse<List<Airport>> loadAllAirports(ServiceRequest<Void> voidServiceRequest);
 }

@@ -6,6 +6,7 @@ import com.kasun.airline.model.user.UserTicket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class ApplicantTicketsRetrieveLogic extends StatelessServiceLogic<List<Us
     @Autowired
     private AirlineDao airlineDao;
 
+    @Transactional
     @Override
     public List<UserTicket> invoke(String applicantId) {
         return airlineDao.loadApplicantAirlineOffers(Long.parseLong(applicantId));
