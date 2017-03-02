@@ -6,7 +6,7 @@ app.controller('usersController', ['$scope', '$http', '$window', function ($scop
         $scope.submitting = true;
         $http({
             method: 'GET',
-            url: '/user/list',
+            url: '/user/list'
         }).success(function (data) {
             $scope.clicked = true;
             $scope.allUsers = data;
@@ -28,7 +28,7 @@ app.controller('usersController', ['$scope', '$http', '$window', function ($scop
         $scope.submitting = true;
         $http({
             method: 'GET',
-            url: '/user/remove/' + userId,
+            url: '/user/remove/' + userId
         }).success(function (data) {
             $scope.allUsers = $scope.userList();
 
