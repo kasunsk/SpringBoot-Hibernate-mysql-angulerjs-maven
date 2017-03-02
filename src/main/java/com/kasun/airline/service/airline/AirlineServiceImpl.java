@@ -186,7 +186,17 @@ public class AirlineServiceImpl implements AirlineService {
         if (airlineOfferRoute.getFrom().equals(airlineOfferRoute.getTo())) {
             throw new ServiceRuntimeException(ErrorCode.INVALID_OFFER_ROUT, "Invalid route");
         }
+        validateRoutAlreadyAvailable(airlineOffer);
+    }
 
+    private void validateRoutAlreadyAvailable(AirlineOffer airlineOffer) {
+
+        Route route = airlineOffer.getRoute();
+        AirlineOfferModel airlineOfferModel = loadOfferByRout(route);
+
+        if (airlineOfferModel != null) {
+            throw new ServiceRuntimeException(ErrorCode.ROUTE_ALREADY_EXIST, "Offer rout already exist, Please remove current offer to add new");
+        }
     }
 
     public void setAirlineDao(AirlineHibernateDao airlineDao) {
