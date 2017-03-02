@@ -25,6 +25,10 @@ app.config(function ($routeProvider) {
             templateUrl: '/views/myTickets.html',
             controller: 'ticketController'
         })
+        .when('/ticket', {
+            templateUrl: '/views/ticket.html',
+            controller: 'ticketController'
+        })
         .otherwise(
         {redirectTo: '/'}
     );

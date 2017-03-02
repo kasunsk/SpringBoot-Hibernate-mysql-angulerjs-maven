@@ -81,12 +81,11 @@ public class AirlineServiceImpl implements AirlineService {
     @Transactional
     public List<UserTicket> retrieveApplicantTickets(String applicantId) {
 
-        List<UserTicket> userTickets = airlineDao.loadApplicantAirlineOffers(Long.parseLong(applicantId));
-        return userTickets;
+        return airlineDao.loadApplicantAirlineOffers(Long.parseLong(applicantId));
     }
 
     @Transactional
-    public void buyAirlineTicket(TicketBuyingRequest request, String applicantId) {
+    public UserTicket buyAirlineTicket(TicketBuyingRequest request, String applicantId) {
 
         BankAccount applicantBankAccount = accountDao.loadAccountById(Long.parseLong(request.getAccountId()));
         Double availableAmount = applicantBankAccount.getAvailableAmount();
@@ -96,10 +95,10 @@ public class AirlineServiceImpl implements AirlineService {
         Price price = calculatePaymentAmount(availableAmount, offerPrice, request.getTicketAmount());
         processPayment(price, applicantBankAccount);
 
-        UserTicket userTicket = getUserTicket(applicantId, airlineOffer);
+        UserTicket userTicket = getUserTicket(applicantId, airlineOffer, request);
         accountDao.saveUserTicket(userTicket);
         updateInventory(airlineOffer, request);
-
+        return userTicket;
     }
 
     private Price getOfferPrice(AirlineOfferModel airlineOffer) {
@@ -122,7 +121,7 @@ public class AirlineServiceImpl implements AirlineService {
         return RequestAssembler.assemble(userAllTicketsLogic, applicantId);
     }
 
-    private UserTicket getUserTicket(String applicantId, AirlineOfferModel airlineOffer) {
+    private UserTicket getUserTicket(String applicantId, AirlineOfferModel airlineOffer, TicketBuyingRequest request) {
         UserTicket userTicket = new UserTicket();
         userTicket.setUserId(Long.parseLong(applicantId));
         userTicket.setOfferId(airlineOffer.getOfferId());
@@ -131,6 +130,7 @@ public class AirlineServiceImpl implements AirlineService {
         userTicket.setOrigin(airlineOffer.getOrigin());
         userTicket.setPrice(airlineOffer.getPrice());
         userTicket.setCurrency(airlineOffer.getCurrency());
+        userTicket.setTicketsAmount(request.getTicketAmount());
         return userTicket;
     }
 
@@ -160,10 +160,10 @@ public class AirlineServiceImpl implements AirlineService {
 
     private Price calculatePaymentAmount(Double availableAmount, Price price, Integer ticketAmount) {
 
-        BigDecimal payableAmount = BigDecimal.valueOf(price.getPrice()).add(new BigDecimal(ticketAmount));
+        BigDecimal payableAmount = BigDecimal.valueOf(price.getPrice()).multiply(new BigDecimal(ticketAmount));
 
         if (BigDecimal.valueOf(availableAmount).compareTo(payableAmount) == -1) {
-            throw new RuntimeException();
+            throw new ServiceRuntimeException(ErrorCode.NOT_ENOUGH_CREDIT, "Credit not enough in given account");
         }
 
         Price amount = new Price();

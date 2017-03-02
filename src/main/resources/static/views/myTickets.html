@@ -16,9 +16,9 @@
                 <th>Origin</th>
                 <th>Destination</th>
                 <th>Price</th>
+                <th>Amount</th>
                 <th>Status</th>
-                <th>Edit</th>
-                <th>Cancel</th>
+                <th>View</th>
             </tr>
             <tbody data-ng-repeat="userTicket in myTickets">
             <tr>
@@ -26,12 +26,12 @@
                 <td>{{userTicket.origin}}</td>
                 <td>{{userTicket.destination}}</td>
                 <td>{{userTicket.price}} {{userTicket.currency}}</td>
+                <td>{{userTicket.ticketsAmount}}</td>
                 <td>{{userTicket.status}}</td>
                 <td>
-                    <button class="btn btn-primary" data-ng-click="edit($index);">Edit</button>
-                </td>
-                <td>
-                    <button class="btn btn-primary" data-ng-click="cancel($index);">Cancel</button>
+                    <button class="btn btn-primary" data-ng-controller="ticketController"
+                            data-ng-click="viewTicket($index);">View
+                    </button>
                 </td>
             </tr>
             </tbody>

@@ -37,6 +37,9 @@ public class UserTicket {
     @Column(name = "CURRENCY", nullable = false)
     private Currency currency;
 
+    @Column(name = "TICKETS_AMOUNT", nullable = false)
+    private Integer ticketsAmount;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
     private UserTicketStatus status;
@@ -95,6 +98,14 @@ public class UserTicket {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public Integer getTicketsAmount() {
+        return ticketsAmount;
+    }
+
+    public void setTicketsAmount(Integer ticketsAmount) {
+        this.ticketsAmount = ticketsAmount;
     }
 
     public UserTicketStatus getStatus() {

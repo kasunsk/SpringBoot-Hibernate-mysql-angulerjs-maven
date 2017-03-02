@@ -61,11 +61,10 @@ public class AirlineController {
     @RequestMapping(value = "/{applicantId}/gammaairlines/offers/buy", method = RequestMethod.POST,
             consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
-    public Boolean buyAOffer(@PathVariable("applicantId") String applicantId,@RequestBody TicketBuyingRequest buyingRequest) {
+    public UserTicket buyAOffer(@PathVariable("applicantId") String applicantId,@RequestBody TicketBuyingRequest buyingRequest) {
 
         validateUser(applicantId);
-        airlineService.buyAirlineTicket(buyingRequest, applicantId);
-        return Boolean.TRUE;
+        return airlineService.buyAirlineTicket(buyingRequest, applicantId);
     }
 
     @RequestMapping(value = "/gammaairlines/country/all", method = RequestMethod.GET)

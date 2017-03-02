@@ -23,7 +23,7 @@ public interface AirlineService {
 
     List<UserTicket> retrieveApplicantTickets(String applicantId);
 
-    void buyAirlineTicket(TicketBuyingRequest request, String applicantId);
+    UserTicket buyAirlineTicket(TicketBuyingRequest request, String applicantId);
 
     List<Airport> allAirports();
 

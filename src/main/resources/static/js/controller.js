@@ -46,7 +46,7 @@ app.controller('rolesController', function ($scope) {
     $scope.headingTitle = "Roles List";
 });
 
-app.controller('ticketController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
+app.controller('ticketController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
     $scope.headingTitle = "My Tickets";
 
     var applicantId = $cookies.get('applicantId');
@@ -69,6 +69,12 @@ app.controller('ticketController', ['$scope', '$http', '$cookies', function ($sc
             else if (status === 409)
                 $scope.badRequest = 'The name is already used.';
         });
+    };
+
+    $scope.viewTicket = function (idx) {
+
+        $scope.userTicket = $scope.myTickets[idx];
+        $window.location.href = '#/ticket';
     };
 }]);
 
@@ -150,7 +156,7 @@ app.controller('registerController', ['$scope', '$http', '$window', function ($s
     };
 }]);
 
-app.controller('accountCreateController', ['$scope', '$http', '$cookies', '$timeout', function ($scope, $http, $cookies, $timeout) {
+app.controller('accountCreateController', ['$scope', '$http', '$cookies', '$window', '$timeout', function ($scope, $http, $cookies, $window, $timeout) {
     $scope.headingTitle = "My Accounts";
     $scope.showSuccessAlert = false;
 
@@ -243,7 +249,7 @@ app.controller('accountCreateController', ['$scope', '$http', '$cookies', '$time
         var accountUrl = '/' + applicantId + '/paypallets/account/all';
         $http({
             method: 'GET',
-            url: accountUrl,
+            url: accountUrl
         }).success(function (data) {
             $scope.showViewAccounts = true;
             $scope.allAccounts = data;
@@ -263,7 +269,7 @@ app.controller('accountCreateController', ['$scope', '$http', '$cookies', '$time
 
         $http({
             method: 'GET',
-            url: accountUrl,
+            url: accountUrl
         }).success(function (data) {
             $scope.accountList();
         }).error(function (data, status) {
@@ -276,7 +282,7 @@ app.controller('accountCreateController', ['$scope', '$http', '$cookies', '$time
     };
 }]);
 
-app.controller('airlineOfferController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
+app.controller('airlineOfferController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
     $scope.headingTitle = "Available Offers";
 
     var applicantRole = $cookies.get('applicantRole');
@@ -293,7 +299,7 @@ app.controller('airlineOfferController', ['$scope', '$http', '$cookies', functio
         $scope.submitting = true;
         $http({
             method: 'GET',
-            url: requestUrl,
+            url: requestUrl
         }).success(function (data) {
             $scope.submitting = false;
             $scope.availableOffers = data;
@@ -313,7 +319,7 @@ app.controller('airlineOfferController', ['$scope', '$http', '$cookies', functio
 
         $http({
             method: 'GET',
-            url: airportListUrl,
+            url: airportListUrl
         }).success(function (data) {
             $scope.availableAirports = data;
 
@@ -343,24 +349,19 @@ app.controller('airlineOfferController', ['$scope', '$http', '$cookies', functio
 
         $scope.offer_to_buy = $scope.availableOffers[idx];
         $scope.displayAccounts = true;
-        //$scope.accountList();
-
     };
 
 
     $scope.buy = function (account) {
 
-        //var offer_to_buy = $scope.availableOffers[idx];
         var rout_to_buy = $scope.offer_to_buy.route;
         var applicantId = $cookies.get('applicantId');
         var accountId = '' + account.accountId;
 
-        var buyingRequest = {
-
+        $scope.buyingRequest = {
             accountId: accountId,
             ticketAmount: 1,
             airlineRout: rout_to_buy
-
         };
 
         var buyingRequestUrl = '/' + applicantId + '/gammaairlines/offers/buy';
@@ -369,10 +370,11 @@ app.controller('airlineOfferController', ['$scope', '$http', '$cookies', functio
         $http({
             method: 'POST',
             url: buyingRequestUrl,
-            data: buyingRequest
+            data: $scope.buyingRequest
         }).success(function (data) {
             $scope.submitting = false;
-            $scope.availbaleOffers = data;
+            $scope.userTicket = data;
+            $window.location.href = '#/ticket';
 
         }).error(function (data, status) {
             $scope.submitting = false;
