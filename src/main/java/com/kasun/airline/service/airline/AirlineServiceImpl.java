@@ -14,10 +14,12 @@ import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.logic.UserAllTicketsLogic;
 import com.kasun.airline.model.account.BankAccount;
+import com.kasun.airline.model.account.Currency;
 import com.kasun.airline.model.airline.AirlineOfferModel;
 import com.kasun.airline.model.airline.Airport;
 import com.kasun.airline.model.airline.Route;
 import com.kasun.airline.model.user.UserTicket;
+import com.kasun.airline.service.account.AccountService;
 import com.kasun.airline.service.user.UserService;
 import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
@@ -48,6 +50,9 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private UserAllTicketsLogic userAllTicketsLogic;
@@ -91,7 +96,7 @@ public class AirlineServiceImpl implements AirlineService {
         Double availableAmount = applicantBankAccount.getAvailableAmount();
         AirlineOfferModel airlineOffer = loadOfferByRout(request.getAirlineRout());
         validateAirlineOfferInventoryAvailability(airlineOffer, request);
-        Price offerPrice = getOfferPrice(airlineOffer);
+        Price offerPrice = getConvertedOfferPrice(airlineOffer, applicantBankAccount.getCurrency());
         Price price = calculatePaymentAmount(availableAmount, offerPrice, request.getTicketAmount());
         processPayment(price, applicantBankAccount);
 
@@ -101,11 +106,15 @@ public class AirlineServiceImpl implements AirlineService {
         return userTicket;
     }
 
-    private Price getOfferPrice(AirlineOfferModel airlineOffer) {
+    private Price getConvertedOfferPrice(AirlineOfferModel airlineOffer, Currency accountCurrency) {
 
         Price price = new Price();
         price.setPrice(airlineOffer.getPrice());
         price.setCurrency(airlineOffer.getCurrency());
+
+        if (!airlineOffer.getCurrency().equals(accountCurrency)) {
+            price = accountService.currencyExchange(price, accountCurrency);
+        }
         return price;
     }
 

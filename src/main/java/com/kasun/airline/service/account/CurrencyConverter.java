@@ -1,6 +1,7 @@
 package com.kasun.airline.service.account;
 
 import com.google.gson.Gson;
+import com.kasun.airline.common.execption.ErrorCode;
 import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.dto.account.CurrencyConversionResponse;
 import org.slf4j.Logger;
@@ -46,8 +47,8 @@ public class CurrencyConverter {
 
         //TODO add error code
         if (strUrl == null || strUrl.isEmpty()) {
-           logger.error("Application Error", "Url is empty");
-            throw new ServiceRuntimeException("","");
+            logger.error("Application Error", "Url is empty");
+            throw new ServiceRuntimeException("", "");
         }
 
         URL url;
@@ -69,7 +70,7 @@ public class CurrencyConverter {
 
             logger.error(ex.getMessage(), ex);
             //TODO add exception codes
-            throw new ServiceRuntimeException(ex.getMessage(), "");
+            throw new ServiceRuntimeException(ErrorCode.CAN_NOT_CONVERT_CURRENCY, ex.getMessage());
         }
         return response;
     }
