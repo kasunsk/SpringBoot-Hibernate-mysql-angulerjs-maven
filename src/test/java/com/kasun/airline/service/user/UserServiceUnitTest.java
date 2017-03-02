@@ -2,6 +2,7 @@ package com.kasun.airline.service.user;
 
 import com.kasun.airline.dao.user.UserDao;
 import com.kasun.airline.model.user.User;
+import org.junit.Ignore;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -34,6 +35,7 @@ public class UserServiceUnitTest {
         userService.authenticateUser("2");
     }
 
+    @Ignore
     @Test
     public void authenticateUserTest() {
 

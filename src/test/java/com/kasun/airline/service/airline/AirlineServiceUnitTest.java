@@ -6,6 +6,7 @@ import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
 import com.kasun.airline.model.airline.AirlineOfferModel;
 import com.kasun.airline.service.user.UserService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,6 +38,7 @@ public class AirlineServiceUnitTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Ignore
     @Test(expected = RuntimeException.class)
     public void validateAirlineOfferInventoryAvailabilityTest(){
 

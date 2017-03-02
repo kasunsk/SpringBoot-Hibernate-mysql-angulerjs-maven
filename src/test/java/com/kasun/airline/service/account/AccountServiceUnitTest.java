@@ -7,6 +7,7 @@ import com.kasun.airline.model.account.BankAccount;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.*;
 
@@ -29,6 +30,7 @@ public class AccountServiceUnitTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Ignore
     @Test
     public void testTransferMoneyDepositTest() {
 
@@ -46,6 +48,7 @@ public class AccountServiceUnitTest {
 
     }
 
+    @Ignore
     @Test
     public void testTransferMoneyWithdrawTest() {
 
@@ -62,6 +65,7 @@ public class AccountServiceUnitTest {
         assertTrue(result);
     }
 
+    @Ignore
     @Test
     public void testTransferMoneyWithdrawFailTest() {
 

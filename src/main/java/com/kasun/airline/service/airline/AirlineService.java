@@ -1,7 +1,7 @@
 package com.kasun.airline.service.airline;
 
-import com.kasun.airline.common.dto.ServiceRequest;
-import com.kasun.airline.common.dto.ServiceResponse;
+import com.kasun.airline.common.dto.*;
+import com.kasun.airline.common.dto.Void;
 import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
@@ -15,9 +15,9 @@ import java.util.List;
  */
 public interface AirlineService {
 
-    void createAirlineOffer(AirlineOffer airlineOffer);
+    ServiceResponse<Void> createAirlineOffer(ServiceRequest<AirlineOffer> airlineOffer);
 
-    void removeAirlineOffer(String airlineOfferId);
+    ServiceResponse<Void> removeAirlineOffer(ServiceRequest<String> airlineOfferId);
 
     ServiceResponse<List<AirlineOffer>> retrieveAvailableAirlineOffers(ServiceRequest<OfferRequest> offerRequest);
 

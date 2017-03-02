@@ -1,10 +1,8 @@
 package com.kasun.airline.service.airline;
 
 import com.kasun.airline.adapter.airline.AirlineOfferAdapter;
-import com.kasun.airline.common.dto.Price;
-import com.kasun.airline.common.dto.ServiceRequest;
-import com.kasun.airline.common.dto.ServiceResponse;
-import com.kasun.airline.common.dto.UserTicketStatus;
+import com.kasun.airline.common.dto.*;
+import com.kasun.airline.common.dto.Void;
 import com.kasun.airline.common.execption.ErrorCode;
 import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.common.service.RequestAssembler;
@@ -13,6 +11,8 @@ import com.kasun.airline.dao.account.AccountDao;
 import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.logic.UserAllTicketsLogic;
+import com.kasun.airline.logic.airline.AirlineOfferCreateLogic;
+import com.kasun.airline.logic.airline.AirlineOfferRemoveLogic;
 import com.kasun.airline.logic.airline.AvailableAirlineOfferRetrieveLogic;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.model.account.Currency;
@@ -56,24 +56,31 @@ public class AirlineServiceImpl implements AirlineService {
     private AccountService accountService;
 
     @Autowired
+    private AirlineOfferCreateLogic airlineOfferCreateLogic;
+
+    @Autowired
     private UserAllTicketsLogic userAllTicketsLogic;
 
     @Autowired
     private AvailableAirlineOfferRetrieveLogic availableAirlineOfferRetrieveLogic;
 
-    @Transactional
-    public void createAirlineOffer(AirlineOffer airlineOffer) {
+    @Autowired
+    private AirlineOfferRemoveLogic airlineOfferRemoveLogic;
 
-        validateAirlineOffer(airlineOffer);
-        AirlineOfferModel offerModel = offerAdapter.adaptFromDto(airlineOffer);
-        airlineDao.saveAirlineOffer(offerModel);
+    @Override
+    public ServiceResponse<Void> createAirlineOffer(ServiceRequest<AirlineOffer> airlineOffer) {
+
+       return RequestAssembler.assemble(airlineOfferCreateLogic, airlineOffer);
     }
+
 
     @Transactional
     @Override
-    public void removeAirlineOffer(String airlineOfferId) {
-        airlineDao.remove(airlineOfferId);
+    public ServiceResponse<Void> removeAirlineOffer(ServiceRequest<String> airlineOfferId) {
+
+        return RequestAssembler.assemble(airlineOfferRemoveLogic, airlineOfferId);
     }
+
 
     @Override
     public ServiceResponse<List<AirlineOffer>> retrieveAvailableAirlineOffers(ServiceRequest<OfferRequest> offerRequest) {
@@ -81,9 +88,6 @@ public class AirlineServiceImpl implements AirlineService {
         return RequestAssembler.assemble(availableAirlineOfferRetrieveLogic, offerRequest);
     }
 
-    private void authenticateApplicant(String applicantId) {
-        userService.authenticateUser(applicantId);
-    }
 
     @Transactional
     public List<UserTicket> retrieveApplicantTickets(String applicantId) {

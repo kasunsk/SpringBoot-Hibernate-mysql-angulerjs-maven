@@ -36,7 +36,7 @@ public class AirlineController {
 
     @RequestMapping(value = "/{applicantId}/gammaairlines/offers", method = RequestMethod.GET)
     @ResponseBody
-    public  List<AirlineOffer> retrieveAvailableOffers(@PathVariable("applicantId") String applicantId,
+    public List<AirlineOffer> retrieveAvailableOffers(@PathVariable("applicantId") String applicantId,
                                                       ModelMap model) {
         OfferRequest offerRequest = new OfferRequest();
         offerRequest.setApplicantId(applicantId);
@@ -45,11 +45,11 @@ public class AirlineController {
     }
 
     @RequestMapping(value = "/gammaairlines/offers/save", method = RequestMethod.POST,
-            consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+            consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public Boolean createOffers(@RequestBody AirlineOffer airlineOffer) {
 
-        airlineService.createAirlineOffer(airlineOffer);
+        airlineService.createAirlineOffer(new ServiceRequest<>(airlineOffer));
         return Boolean.TRUE;
     }
 
@@ -62,9 +62,9 @@ public class AirlineController {
 
 
     @RequestMapping(value = "/{applicantId}/gammaairlines/offers/buy", method = RequestMethod.POST,
-            consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+            consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public UserTicket buyAOffer(@PathVariable("applicantId") String applicantId,@RequestBody TicketBuyingRequest buyingRequest) {
+    public UserTicket buyAOffer(@PathVariable("applicantId") String applicantId, @RequestBody TicketBuyingRequest buyingRequest) {
 
         validateUser(applicantId);
         return airlineService.buyAirlineTicket(buyingRequest, applicantId);
@@ -81,7 +81,7 @@ public class AirlineController {
     @ResponseBody
     public Boolean loadAllCountries(@PathVariable("offerId") String offerId) {
 
-         airlineService.removeAirlineOffer(offerId);
+        airlineService.removeAirlineOffer(new ServiceRequest<>(offerId));
         return Boolean.TRUE;
     }
 
@@ -95,7 +95,7 @@ public class AirlineController {
 
     @RequestMapping(value = "/{applicantId}/gammaairlines/tickets/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    public List<UserTicket> loadUsersTickers(@PathVariable("applicantId") String applicantId,@PathVariable("userId") String userId) {
+    public List<UserTicket> loadUsersTickers(@PathVariable("applicantId") String applicantId, @PathVariable("userId") String userId) {
 
         validateUser(applicantId);
         return airlineService.retrieveApplicantTickets(userId);
