@@ -13,6 +13,7 @@ import com.kasun.airline.dao.account.AccountDao;
 import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.logic.UserAllTicketsLogic;
+import com.kasun.airline.logic.airline.AvailableAirlineOfferRetrieveLogic;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.model.account.Currency;
 import com.kasun.airline.model.airline.AirlineOfferModel;
@@ -57,6 +58,9 @@ public class AirlineServiceImpl implements AirlineService {
     @Autowired
     private UserAllTicketsLogic userAllTicketsLogic;
 
+    @Autowired
+    private AvailableAirlineOfferRetrieveLogic availableAirlineOfferRetrieveLogic;
+
     @Transactional
     public void createAirlineOffer(AirlineOffer airlineOffer) {
 
@@ -71,12 +75,10 @@ public class AirlineServiceImpl implements AirlineService {
         airlineDao.remove(airlineOfferId);
     }
 
-    @Transactional
-    public List<AirlineOffer> retrieveAvailableAirlineOffers(OfferRequest offerRequest) {
+    @Override
+    public ServiceResponse<List<AirlineOffer>> retrieveAvailableAirlineOffers(ServiceRequest<OfferRequest> offerRequest) {
 
-        authenticateApplicant(offerRequest.getApplicantId());
-        List<AirlineOfferModel> offerList = airlineDao.loadAirlineOffers(offerRequest.getStatus());
-        return offerAdapter.adaptFromModelList(offerList);
+        return RequestAssembler.assemble(availableAirlineOfferRetrieveLogic, offerRequest);
     }
 
     private void authenticateApplicant(String applicantId) {

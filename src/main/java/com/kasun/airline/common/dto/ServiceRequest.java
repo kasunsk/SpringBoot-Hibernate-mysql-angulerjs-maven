@@ -8,6 +8,10 @@ public class ServiceRequest<T> {
     private T payload;
     private Tenant tenant;
 
+    public ServiceRequest(T payload) {
+        this.payload = payload;
+    }
+
     public T getPayload() {
         return payload;
     }

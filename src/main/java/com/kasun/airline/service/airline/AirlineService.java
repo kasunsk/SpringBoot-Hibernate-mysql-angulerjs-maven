@@ -19,7 +19,7 @@ public interface AirlineService {
 
     void removeAirlineOffer(String airlineOfferId);
 
-    List<AirlineOffer> retrieveAvailableAirlineOffers(OfferRequest offerRequest);
+    ServiceResponse<List<AirlineOffer>> retrieveAvailableAirlineOffers(ServiceRequest<OfferRequest> offerRequest);
 
     List<UserTicket> retrieveApplicantTickets(String applicantId);
 

@@ -1,6 +1,8 @@
 package com.kasun.airline.controller;
 
 import com.kasun.airline.common.dto.EmailRequest;
+import com.kasun.airline.common.dto.ServiceRequest;
+import com.kasun.airline.common.dto.ServiceResponse;
 import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
@@ -38,7 +40,8 @@ public class AirlineController {
                                                       ModelMap model) {
         OfferRequest offerRequest = new OfferRequest();
         offerRequest.setApplicantId(applicantId);
-        return airlineService.retrieveAvailableAirlineOffers(offerRequest);
+        ServiceResponse<List<AirlineOffer>> response = airlineService.retrieveAvailableAirlineOffers(new ServiceRequest<>(offerRequest));
+        return response.getPayload();
     }
 
     @RequestMapping(value = "/gammaairlines/offers/save", method = RequestMethod.POST,

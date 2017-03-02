@@ -12,20 +12,13 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class RequestAssembler {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestAssembler.class);
-
     @SuppressWarnings("unchecked")
-    public static <T,V> ServiceResponse<T> assemble(ServiceLogic<T,V> logic, ServiceRequest<V> serviceRequest) {
+    public static <T, V> ServiceResponse<T> assemble(ServiceLogic<T, V> logic, ServiceRequest<V> serviceRequest) {
 
         ServiceResponse serviceResponse = new ServiceResponse();
 
-        try {
-            Object result = logic.invoke(serviceRequest.getPayload());
-            serviceResponse.setPayload(result);
-        } catch (ServiceRuntimeException ex) {
-            logger.error(ex.getMessage(), ex);
-            addError(serviceResponse, ex);
-        }
+        Object result = logic.invoke(serviceRequest.getPayload());
+        serviceResponse.setPayload(result);
         return serviceResponse;
     }
 
