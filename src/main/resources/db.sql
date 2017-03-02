@@ -17,6 +17,8 @@ CREATE TABLE USER (
     PRIMARY KEY (USER_ID)
 );
 
+INSERT INTO USER VALUES ('1', 'Admin','admin@test.com','password','ADMIN');
+
 CREATE TABLE BANK_ACCOUNT (
     ID INT NOT NULL auto_increment,
     USER_ID INT(10) NOT NULL,

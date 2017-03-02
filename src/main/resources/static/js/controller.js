@@ -468,7 +468,7 @@ app.controller('usersTicketsController', ['$scope', '$http', '$cookies', '$windo
         $scope.submitting = true;
         $http({
             method: 'GET',
-            url: userTicketsUrl,
+            url: userTicketsUrl
         }).success(function (data) {
             $scope.submitting = false;
             $scope.usersTickets = data;
@@ -490,5 +490,53 @@ app.controller('moneyExchangeController', ['$scope', '$http', '$cookies', '$wind
 
     var applicantId = $cookies.get('applicantId');
     var applicantRole = $cookies.get('applicantRole');
+
+    $scope.init = function() {
+        $http({
+            method: 'GET',
+            url: '/account/availableCurrency'
+        }).success(function (data) {
+            $scope.currencies = data;
+
+        }).error(function (data, status) {
+            $scope.submitting = false;
+            if (status === 400)
+                $scope.badRequest = data;
+            else if (status === 409)
+                $scope.badRequest = '';
+        });
+    };
+
+    $scope.exchangeRequest = {
+
+        monetaryAmount : {
+            price : null,
+            currency : null
+        },
+        targetCurrency : null
+    };
+
+    $scope.exchange = function() {
+
+        var currencyExchangeUrl = '/' + applicantId + '/moneyexchange/exchange';
+
+        $http({
+            method: 'POST',
+            url: currencyExchangeUrl,
+            data: $scope.exchangeRequest
+        }).success(function (data) {
+            $scope.submitting = false;
+            $scope.exchangeResult = data;
+
+        }).error(function (data, status) {
+            $scope.submitting = false;
+            if (status === 400)
+                $scope.badRequest = data;
+            else if (status === 409)
+                $scope.badRequest = '';
+        });
+
+
+    }
 
 }]);
