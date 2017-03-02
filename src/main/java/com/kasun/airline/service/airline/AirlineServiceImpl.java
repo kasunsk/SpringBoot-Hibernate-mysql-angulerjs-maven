@@ -24,9 +24,6 @@ public class AirlineServiceImpl implements AirlineService {
     private AirlineOfferCreateLogic airlineOfferCreateLogic;
 
     @Autowired
-    private UserAllTicketsLogic userAllTicketsLogic;
-
-    @Autowired
     private AvailableAirlineOfferRetrieveLogic availableAirlineOfferRetrieveLogic;
 
     @Autowired
