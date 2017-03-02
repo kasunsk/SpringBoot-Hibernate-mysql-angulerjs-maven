@@ -13,6 +13,7 @@ import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.logic.UserAllTicketsLogic;
 import com.kasun.airline.logic.airline.AirlineOfferCreateLogic;
 import com.kasun.airline.logic.airline.AirlineOfferRemoveLogic;
+import com.kasun.airline.logic.airline.ApplicantTicketsRetrieveLogic;
 import com.kasun.airline.logic.airline.AvailableAirlineOfferRetrieveLogic;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.model.account.Currency;
@@ -31,8 +32,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
-
-import static com.kasun.airline.util.ValidationUtil.validate;
 
 /**
  * Created by kasun on 2/4/17.
@@ -67,6 +66,9 @@ public class AirlineServiceImpl implements AirlineService {
     @Autowired
     private AirlineOfferRemoveLogic airlineOfferRemoveLogic;
 
+    @Autowired
+    private ApplicantTicketsRetrieveLogic applicantTicketsRetrieveLogic;
+
     @Override
     public ServiceResponse<Void> createAirlineOffer(ServiceRequest<AirlineOffer> airlineOffer) {
 
@@ -88,12 +90,12 @@ public class AirlineServiceImpl implements AirlineService {
         return RequestAssembler.assemble(availableAirlineOfferRetrieveLogic, offerRequest);
     }
 
+    @Override
+    public ServiceResponse<List<UserTicket>> retrieveApplicantTickets(ServiceRequest<String> applicantId) {
 
-    @Transactional
-    public List<UserTicket> retrieveApplicantTickets(String applicantId) {
-
-        return airlineDao.loadApplicantAirlineOffers(Long.parseLong(applicantId));
+        return RequestAssembler.assemble(applicantTicketsRetrieveLogic, applicantId);
     }
+
 
     @Transactional
     public UserTicket buyAirlineTicket(TicketBuyingRequest request, String applicantId) {

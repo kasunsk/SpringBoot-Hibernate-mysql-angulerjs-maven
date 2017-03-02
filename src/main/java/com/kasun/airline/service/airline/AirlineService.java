@@ -21,7 +21,7 @@ public interface AirlineService {
 
     ServiceResponse<List<AirlineOffer>> retrieveAvailableAirlineOffers(ServiceRequest<OfferRequest> offerRequest);
 
-    List<UserTicket> retrieveApplicantTickets(String applicantId);
+    ServiceResponse<List<UserTicket>> retrieveApplicantTickets(ServiceRequest<String> applicantId);
 
     UserTicket buyAirlineTicket(TicketBuyingRequest request, String applicantId);
 

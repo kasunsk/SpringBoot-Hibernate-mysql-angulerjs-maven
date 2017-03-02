@@ -57,7 +57,7 @@ public class AirlineController {
     @ResponseBody
     public List<UserTicket> retrieveApplicantTickets(@PathVariable("applicantId") String applicantId) {
 
-        return airlineService.retrieveApplicantTickets(applicantId);
+        return airlineService.retrieveApplicantTickets(new ServiceRequest<>(applicantId)).getPayload();
     }
 
 
@@ -98,7 +98,7 @@ public class AirlineController {
     public List<UserTicket> loadUsersTickers(@PathVariable("applicantId") String applicantId, @PathVariable("userId") String userId) {
 
         validateUser(applicantId);
-        return airlineService.retrieveApplicantTickets(userId);
+        return airlineService.retrieveApplicantTickets(new ServiceRequest<>(userId)).getPayload();
     }
 
 
