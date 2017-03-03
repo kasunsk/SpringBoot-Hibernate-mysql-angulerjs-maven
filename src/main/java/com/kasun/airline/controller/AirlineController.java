@@ -108,7 +108,7 @@ public class AirlineController {
 
     private void validateUser(String applicantId) {
 
-        userService.authenticateUser(applicantId);
+        userService.authenticateUser(new ServiceRequest<>(applicantId));
     }
 
 }

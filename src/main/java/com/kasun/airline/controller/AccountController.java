@@ -2,6 +2,7 @@ package com.kasun.airline.controller;
 
 import com.kasun.airline.common.dto.CurrencyExchangeRequest;
 import com.kasun.airline.common.dto.Price;
+import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.dto.account.AccountRequest;
 import com.kasun.airline.dto.account.DepositRequest;
 import com.kasun.airline.model.account.BankAccount;
@@ -97,12 +98,12 @@ public class AccountController {
 
     private void validateUser(String applicantId) {
 
-        userService.authenticateUser(applicantId);
+        userService.authenticateUser(new ServiceRequest<>(applicantId));
     }
 
     private BankAccount buildAccountCreateRequest(String applicantId, AccountRequest accountRequest) {
 
-        User user = userService.loadUserById(applicantId);
+        User user = userService.loadUserById(new ServiceRequest<>(applicantId)).getPayload();
 
         BankAccount bankAccount = new BankAccount();
         bankAccount.setUser(user);

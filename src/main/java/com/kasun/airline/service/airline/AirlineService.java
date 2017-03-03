@@ -5,7 +5,6 @@ import com.kasun.airline.common.dto.Void;
 import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.dto.airline.TicketBuy;
-import com.kasun.airline.dto.airline.TicketBuyingRequest;
 import com.kasun.airline.model.airline.Airport;
 import com.kasun.airline.model.user.UserTicket;
 

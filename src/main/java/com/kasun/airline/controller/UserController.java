@@ -1,5 +1,6 @@
 package com.kasun.airline.controller;
 
+import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.dto.user.LoginRequest;
 import com.kasun.airline.dto.user.UserRole;
 import com.kasun.airline.common.dto.UserSearchCriteria;
@@ -45,14 +46,14 @@ public class UserController {
     @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     @ResponseBody
     public List<User> allUsers() {
-        List<User> users = userService.retrieveAllUsers();
+        List<User> users = userService.retrieveAllUsers(new ServiceRequest<>(new com.kasun.airline.common.dto.Void())).getPayload();
         return users;
     }
 
     @RequestMapping(value = {"/remove/{userId}"}, method = RequestMethod.GET)
     @ResponseBody
     public Boolean removeUser(@PathVariable("userId") String userId) {
-        userService.removeUser(userId);
+        userService.removeUser(new ServiceRequest<>(userId));
         return Boolean.TRUE;
     }
 
@@ -61,19 +62,19 @@ public class UserController {
     public User login(@RequestBody LoginRequest loginRequest) {
 
         validateLoginRequest(loginRequest);
-        return userService.login(loginRequest);
+        return userService.login(new ServiceRequest<>(loginRequest)).getPayload();
     }
 
     @RequestMapping(value = {"/{applicantId}/search"}, method = RequestMethod.POST)
     @ResponseBody
     public List<User> searchUser(@PathVariable("applicantId") String applicantId, @RequestBody UserSearchCriteria searchCriteria) {
 
-        User user = userService.loadUserById(applicantId);
+        User user = userService.loadUserById(new ServiceRequest<>(applicantId)).getPayload();
 
         if (user.getRole() != UserRole.ADMIN) {
             throw new RuntimeException("User not have enough privileges");
         }
-        return userService.searchUser(searchCriteria);
+        return userService.searchUser(new ServiceRequest<>(searchCriteria)).getPayload();
     }
 
     private void validateLoginRequest(LoginRequest loginRequest) {
@@ -86,7 +87,7 @@ public class UserController {
     @RequestMapping(value = {"/save"}, method = RequestMethod.POST)
     @ResponseBody
     public Boolean saveUser(@RequestBody User user) {
-        userService.saveUser(user);
+        userService.saveUser(new ServiceRequest<>(user));
         return Boolean.TRUE;
     }
 
@@ -98,7 +99,7 @@ public class UserController {
             return "registration";
         }
 
-        userService.saveUser(user);
+        userService.saveUser(new ServiceRequest<>(user));
 
         model.addAttribute("success", "User " + user.getName() + " registered successfully");
         return "success";

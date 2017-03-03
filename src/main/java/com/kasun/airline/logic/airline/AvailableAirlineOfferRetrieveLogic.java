@@ -1,6 +1,7 @@
 package com.kasun.airline.logic.airline;
 
 import com.kasun.airline.adapter.airline.AirlineOfferAdapter;
+import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.common.service.StatelessServiceLogic;
 import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.dto.airline.AirlineOffer;
@@ -38,6 +39,6 @@ public class AvailableAirlineOfferRetrieveLogic extends StatelessServiceLogic<Li
     }
 
     private void authenticateApplicant(String applicantId) {
-        userService.authenticateUser(applicantId);
+        userService.authenticateUser(new ServiceRequest<>(applicantId));
     }
 }

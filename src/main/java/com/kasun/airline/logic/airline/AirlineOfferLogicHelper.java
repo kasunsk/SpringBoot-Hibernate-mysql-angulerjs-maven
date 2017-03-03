@@ -1,5 +1,6 @@
 package com.kasun.airline.logic.airline;
 
+import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.model.airline.AirlineOfferModel;
 import com.kasun.airline.model.airline.Route;
@@ -24,6 +25,6 @@ public class AirlineOfferLogicHelper {
     }
 
     protected void authenticateApplicant(String applicantId) {
-        userService.authenticateUser(applicantId);
+        userService.authenticateUser(new ServiceRequest<>(applicantId));
     }
 }

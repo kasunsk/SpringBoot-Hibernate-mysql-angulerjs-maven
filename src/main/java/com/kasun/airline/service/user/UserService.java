@@ -1,10 +1,12 @@
 
 package com.kasun.airline.service.user;
 
+import com.kasun.airline.common.dto.*;
+import com.kasun.airline.common.dto.Void;
 import com.kasun.airline.dto.user.LoginRequest;
-import com.kasun.airline.common.dto.UserSearchCriteria;
 import com.kasun.airline.model.user.User;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**
@@ -12,19 +14,17 @@ import java.util.List;
  */
 public interface UserService {
 
-    String saveUser(User user);
+    ServiceResponse<String> saveUser(ServiceRequest<User> user);
 
-    List<User> retrieveAllUsers();
+    ServiceResponse<List<User>> retrieveAllUsers(ServiceRequest<com.kasun.airline.common.dto.Void> voidServiceRequest);
 
-    void removeUser(String userId);
+    ServiceResponse<Void> removeUser(ServiceRequest<String> userId);
 
-    Boolean isUserNameUnique(Long userId, String userName);
+    ServiceResponse<User> login(ServiceRequest<LoginRequest> loginRequest);
 
-    User login(LoginRequest loginRequest);
+    ServiceResponse<Void> authenticateUser(ServiceRequest<String> applicantId);
 
-    void authenticateUser(String applicantId);
+    ServiceResponse<User> loadUserById(ServiceRequest<String> applicantId);
 
-    User loadUserById(String applicantId);
-
-    List<User> searchUser(UserSearchCriteria searchCriteria);
+    ServiceResponse<List<User>> searchUser(ServiceRequest<UserSearchCriteria> criteria);
 }

@@ -1,5 +1,6 @@
 package com.kasun.airline.service.user;
 
+import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.dao.user.UserDao;
 import com.kasun.airline.model.user.User;
 import org.junit.Ignore;
@@ -32,7 +33,7 @@ public class UserServiceUnitTest {
     public void authenticateUserFailTest() {
 
         when(userHibernateDao.loadUserById("2")).thenReturn(null);
-        userService.authenticateUser("2");
+        userService.authenticateUser(new ServiceRequest<>("2"));
     }
 
     @Ignore
@@ -42,7 +43,7 @@ public class UserServiceUnitTest {
         when(userHibernateDao.loadUserById("2")).thenReturn(new User());
 
         try {
-            userService.authenticateUser("2");
+            userService.authenticateUser(new ServiceRequest<>("2"));
         } catch (RuntimeException ex) {
             fail();
         }

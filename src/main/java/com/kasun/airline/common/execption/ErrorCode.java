@@ -10,4 +10,5 @@ public class ErrorCode {
     public static final String NOT_ENOUGH_CREDIT = "Credit not enough";
     public static final String ROUTE_ALREADY_EXIST = "Rout already exist";
     public static final String CAN_NOT_CONVERT_CURRENCY = "Can not convert currency";
+    public static final String USER_NOT_FOUND = "User not found";
 }
