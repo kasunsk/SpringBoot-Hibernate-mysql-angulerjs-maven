@@ -17,6 +17,9 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/**
+ * This class responsible for creating hibernate bean configuration
+ */
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({ "com.kasun.airline.configuration" })
