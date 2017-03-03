@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by kasun on 2/4/17.
- */
+
 @Service("airlineService")
 public class AirlineServiceImpl implements AirlineService {
 

@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Created by kasun on 2/4/17.
+ * This class is responsible for provide adaptation facility between AirlineOfferModel and AirlineOffer
  */
 @Component
 public class AirlineOfferAdapter {
@@ -29,12 +30,7 @@ public class AirlineOfferAdapter {
 
     public List<AirlineOffer> adaptFromModelList(List<AirlineOfferModel> offerList) {
 
-        List<AirlineOffer> offers = new ArrayList<AirlineOffer>();
-
-        for (AirlineOfferModel offerModel : offerList) {
-            offers.add(adaptFromModel(offerModel));
-        }
-        return offers;
+        return offerList.stream().map(this::adaptFromModel).collect(Collectors.toList());
     }
 
     private AirlineOffer adaptFromModel(AirlineOfferModel offerModel) {

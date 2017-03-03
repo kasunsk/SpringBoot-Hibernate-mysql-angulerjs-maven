@@ -2,10 +2,9 @@ package com.kasun.airline.util;
 
 import com.kasun.airline.common.execption.ServiceRuntimeException;
 
-import javax.xml.ws.Service;
 
 /**
- * Created by kasun on 2/6/17.
+ * This class provide validation facility for Object and String
  */
 public class ValidationUtil {
 

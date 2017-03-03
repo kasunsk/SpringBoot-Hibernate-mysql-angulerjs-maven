@@ -1,7 +1,7 @@
 package com.kasun.airline.common.execption;
 
 /**
- * Created by kasun on 2/27/17.
+ * This class wrap exceptions
  */
 public class ServiceRuntimeException extends RuntimeException{
 

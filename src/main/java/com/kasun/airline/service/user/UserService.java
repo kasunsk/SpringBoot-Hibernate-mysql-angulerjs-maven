@@ -6,7 +6,6 @@ import com.kasun.airline.common.dto.Void;
 import com.kasun.airline.dto.user.LoginRequest;
 import com.kasun.airline.model.user.User;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**

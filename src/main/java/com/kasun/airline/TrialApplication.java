@@ -5,6 +5,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+/**
+ * This is the starter class for the application
+ */
+
 @EnableAutoConfiguration
 @SpringBootApplication
 @ComponentScan(basePackages = "com.kasun.airline")

@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by kasun on 2/28/17.
+ * This class is responsible for retrieve currency rate and convert in to readable type
  */
 public class CurrencyConverter {
 

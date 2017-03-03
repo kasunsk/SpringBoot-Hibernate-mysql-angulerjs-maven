@@ -6,7 +6,7 @@ import com.kasun.airline.model.user.User;
 import java.util.List;
 
 /**
- * Created by kasun on 1/28/17.
+ * This interface provide the database access methods
  */
 public interface UserDao {
 
