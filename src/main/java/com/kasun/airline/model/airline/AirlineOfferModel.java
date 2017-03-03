@@ -1,6 +1,7 @@
 package com.kasun.airline.model.airline;
 
 import com.kasun.airline.dto.airline.AirlineOffer;
+import com.kasun.airline.model.AbstractTrackableEntity;
 import com.kasun.airline.model.account.Currency;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "AIRLINE_OFFER")
-public class AirlineOfferModel {
+public class AirlineOfferModel extends AbstractTrackableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

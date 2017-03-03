@@ -1,6 +1,7 @@
 package com.kasun.airline.model.user;
 
 import com.kasun.airline.dto.user.UserRole;
+import com.kasun.airline.model.AbstractTrackableEntity;
 import com.kasun.airline.model.account.BankAccount;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "USER")
-public class User {
+public class User extends AbstractTrackableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
