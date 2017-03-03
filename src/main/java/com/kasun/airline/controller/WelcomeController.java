@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Created by kasun on 2/5/17.
+ * Basic http rest interface for welcome
  */
 @Controller
 public class WelcomeController {

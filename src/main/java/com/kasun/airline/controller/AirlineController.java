@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Created by kasun on 2/4/17.
+ * This class provide http rest interface for Airline Services
  */
 @Controller
 public class AirlineController {

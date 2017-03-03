@@ -1,7 +1,7 @@
 package com.kasun.airline.common.dto;
 
 /**
- * Created by kasun on 2/28/17.
+ * Standard generic request type for provided APIs. Usefull for multi tenancy capability
  */
 public class ServiceRequest<T> {
 

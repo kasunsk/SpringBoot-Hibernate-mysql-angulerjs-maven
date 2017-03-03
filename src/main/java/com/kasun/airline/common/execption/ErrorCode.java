@@ -1,14 +1,14 @@
 package com.kasun.airline.common.execption;
 
 /**
- * Created by kasun on 2/27/17.
+ * This class provide standard error codes for the application
  */
-public class ErrorCode {
+public interface ErrorCode {
 
-    public static final String NO_ENOUGH_INV = "No enough inventory";
-    public static final String INVALID_OFFER_ROUT = "Invalid offer route";
-    public static final String NOT_ENOUGH_CREDIT = "Credit not enough";
-    public static final String ROUTE_ALREADY_EXIST = "Rout already exist";
-    public static final String CAN_NOT_CONVERT_CURRENCY = "Can not convert currency";
-    public static final String USER_NOT_FOUND = "User not found";
+    String NO_ENOUGH_INV = "No enough inventory";
+    String INVALID_OFFER_ROUT = "Invalid offer route";
+    String NOT_ENOUGH_CREDIT = "Credit not enough";
+    String ROUTE_ALREADY_EXIST = "Rout already exist";
+    String CAN_NOT_CONVERT_CURRENCY = "Can not convert currency";
+    String USER_NOT_FOUND = "User not found";
 }

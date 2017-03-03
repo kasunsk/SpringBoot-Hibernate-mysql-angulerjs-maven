@@ -19,7 +19,7 @@ import java.util.List;
 import static com.kasun.airline.util.ValidationUtil.validate;
 
 /**
- * Created by kasun on 1/28/17.
+ * This class will provide http rest interface for the User Services
  */
 
 @Controller

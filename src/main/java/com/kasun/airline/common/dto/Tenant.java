@@ -1,7 +1,7 @@
 package com.kasun.airline.common.dto;
 
 /**
- * Created by kasun on 2/28/17.
+ * This can be used when multi tenancy facility enable for the application
  */
 public class Tenant {
 

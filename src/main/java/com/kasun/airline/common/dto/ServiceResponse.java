@@ -1,9 +1,7 @@
 package com.kasun.airline.common.dto;
 
-import com.kasun.airline.common.execption.Error;
-
 /**
- * Created by kasun on 2/28/17.
+ * Standard response type for the provided APIs
  */
 public class ServiceResponse<T> {
 

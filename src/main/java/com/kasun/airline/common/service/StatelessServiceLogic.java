@@ -1,7 +1,7 @@
 package com.kasun.airline.common.service;
 
 /**
- * Created by kasun on 2/28/17.
+ *  Usage of polymorphism in OOP for every logic classes.
  */
 public abstract class  StatelessServiceLogic<T,V> implements ServiceLogic<T,V> {
 

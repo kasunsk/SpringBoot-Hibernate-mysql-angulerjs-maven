@@ -14,7 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- * Created by kasun on 2/9/17.
+ * Util class for Email Services
  */
 public class EmailUtil {
 
