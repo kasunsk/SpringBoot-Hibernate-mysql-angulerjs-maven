@@ -1,12 +1,13 @@
 package com.kasun.airline.model.email;
 
 import com.kasun.airline.model.AbstractTrackableEntity;
-
 import javax.persistence.*;
 
 /**
  * Created by kasun on 3/3/17.
  */
+@Entity
+@Table(name = "EMAIL_DATA")
 public class EmailModel extends AbstractTrackableEntity {
 
     public enum EmailStatus {
