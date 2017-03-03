@@ -1,6 +1,7 @@
 package com.kasun.airline.util;
 
 
+import com.kasun.airline.common.execption.ServiceRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +68,7 @@ public class EmailUtil {
             logger.info("EMail Sent Successfully!!");
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new ServiceRuntimeException(e.getMessage());
         }
     }
 }

@@ -58,6 +58,14 @@ public class AirlineHibernateDao extends AbstractDao<Long, AirlineOfferModel> im
         return query.list();
     }
 
+    @Override
+    public UserTicket loadUserTicketById(Long userTicketId) {
+
+        Query query = getSession().createQuery("from UserTicket UT where UT.id=:userTicketId");
+        query.setParameter("userTicketId", userTicketId);
+        return (UserTicket) query.uniqueResult();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Airport> loadAllAirports() {

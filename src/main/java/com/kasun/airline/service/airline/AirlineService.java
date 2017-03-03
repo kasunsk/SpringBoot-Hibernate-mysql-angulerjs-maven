@@ -56,4 +56,6 @@ public interface AirlineService {
      * @return List of all Airport
      */
     ServiceResponse<List<Airport>> loadAllAirports(ServiceRequest<Void> voidServiceRequest);
+
+    ServiceResponse<Boolean> sendUserTicketEmail(ServiceRequest<String> userTicketId);
 }

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This class provide http interface for Account Services
+ * This class provide http rest interface for Account Services
  */
 
 @Controller

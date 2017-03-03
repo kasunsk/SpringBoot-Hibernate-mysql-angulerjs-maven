@@ -22,6 +22,8 @@ public interface AirlineDao {
 
     List<UserTicket> loadApplicantAirlineOffers(Long applicantId);
 
+    UserTicket loadUserTicketById(Long userTicketId);
+
     List<Airport> loadAllAirports();
 
     void remove(String airlineOfferId);

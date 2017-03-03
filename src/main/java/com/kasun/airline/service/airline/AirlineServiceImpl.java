@@ -36,6 +36,9 @@ public class AirlineServiceImpl implements AirlineService {
     @Autowired
     private AllAirportsLoadingLogic allAirportsLoadingLogic;
 
+    @Autowired
+    private UserTicketEmailSendingLogic userTicketEmailSendingLogic;
+
     @Override
     public ServiceResponse<Void> createAirlineOffer(ServiceRequest<AirlineOffer> airlineOffer) {
 
@@ -73,6 +76,12 @@ public class AirlineServiceImpl implements AirlineService {
     public ServiceResponse<List<Airport>> loadAllAirports(ServiceRequest<Void> voidServiceRequest) {
 
         return RequestAssembler.assemble(allAirportsLoadingLogic, voidServiceRequest);
+    }
+
+    @Override
+    public ServiceResponse<Boolean> sendUserTicketEmail(ServiceRequest<String> userTicketId) {
+
+        return RequestAssembler.assemble(userTicketEmailSendingLogic, userTicketId);
     }
 
 }

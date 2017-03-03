@@ -89,6 +89,14 @@ public class AirlineController {
         return Boolean.TRUE;
     }
 
+    @RequestMapping(value = "/gammaairlines/userTicket/email/send/{userTicketId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Boolean sendUserTicketEmail(@PathVariable String userTicketId) {
+
+        airlineService.sendUserTicketEmail(new ServiceRequest<>(userTicketId));
+        return Boolean.TRUE;
+    }
+
     @RequestMapping(value = "/gammaairlines/email/send", method = RequestMethod.POST)
     @ResponseBody
     public Boolean sendEmail(@RequestBody EmailRequest emailRequest) {
