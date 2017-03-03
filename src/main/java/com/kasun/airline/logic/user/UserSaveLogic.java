@@ -2,7 +2,6 @@ package com.kasun.airline.logic.user;
 
 import com.kasun.airline.common.service.StatelessServiceLogic;
 import com.kasun.airline.dao.user.UserDao;
-import com.kasun.airline.dao.user.UserHibernateDao;
 import com.kasun.airline.dto.user.UserRole;
 import com.kasun.airline.model.user.User;
 import com.kasun.airline.util.ValidationUtil;
