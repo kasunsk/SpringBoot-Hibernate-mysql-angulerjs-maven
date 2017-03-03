@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 
 /**
  * Created by kasun on 3/3/17.
@@ -39,6 +41,7 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
 
     private static String USER_TICKET_MAIL_SUBJECT = "Ticket Details";
 
+    @Transactional
     @Override
     public Boolean invoke(String userTicketId) {
 
