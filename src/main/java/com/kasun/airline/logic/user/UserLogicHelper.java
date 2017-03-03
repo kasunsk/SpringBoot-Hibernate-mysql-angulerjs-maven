@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by kasun on 3/3/17.
+ * This helper class is provide all the common methods for User Logic classes.
  */
 @Component
 public class UserLogicHelper {

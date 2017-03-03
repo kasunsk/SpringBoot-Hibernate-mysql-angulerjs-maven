@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by kasun on 3/2/17.
+ * This helper class will provide common methods for Airline Logic classes.
  */
 @Component
 public class AirlineOfferLogicHelper {
