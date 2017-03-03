@@ -1,5 +1,6 @@
 package com.kasun.airline.service.account;
 
+import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.dao.account.AccountDao;
 import com.kasun.airline.dto.account.MoneyTransferRequest;
 import com.kasun.airline.model.account.BankAccount;
@@ -42,7 +43,7 @@ public class AccountServiceUnitTest {
         request.setAccountNumber("number1");
         request.setTransferAmount(500d);
         request.setTransferType(MoneyTransferRequest.TransferType.DEPOSIT);
-        boolean result = accountService.transferMoney(request);
+        boolean result = accountService.transferMoney(new ServiceRequest<>(request)).getPayload();
         assertEquals(new Double(1500), bankAccount.getAvailableAmount());
         assertTrue(result);
 
@@ -60,7 +61,7 @@ public class AccountServiceUnitTest {
         request.setAccountNumber("number1");
         request.setTransferAmount(500d);
         request.setTransferType(MoneyTransferRequest.TransferType.WITHDRAW);
-        boolean result = accountService.transferMoney(request);
+        boolean result = accountService.transferMoney(new ServiceRequest<>(request)).getPayload();
         assertEquals(new Double(500), bankAccount.getAvailableAmount());
         assertTrue(result);
     }
@@ -77,7 +78,7 @@ public class AccountServiceUnitTest {
         request.setAccountNumber("number1");
         request.setTransferAmount(1500d);
         request.setTransferType(MoneyTransferRequest.TransferType.WITHDRAW);
-        boolean result = accountService.transferMoney(request);
+        boolean result = accountService.transferMoney(new ServiceRequest<>(request)).getPayload();
         assertEquals(new Double(1000), bankAccount.getAvailableAmount());
         assertFalse(result);
     }

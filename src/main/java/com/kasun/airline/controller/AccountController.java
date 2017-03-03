@@ -39,7 +39,7 @@ public class AccountController {
 
         validateUser(applicantId);
         BankAccount bankAccount = buildAccountCreateRequest(applicantId, accountRequest);
-        return accountService.createAccount(bankAccount);
+        return accountService.createAccount(new ServiceRequest<>(bankAccount)).getPayload();
     }
 
     @RequestMapping(value = "/{applicantId}/paypallets/account/deposit", method = RequestMethod.POST,
@@ -49,7 +49,7 @@ public class AccountController {
 
         validateUser(applicantId);
         validateAccount(applicantId);
-        return accountService.deposit(depositRequest);
+        return accountService.deposit(new ServiceRequest<>(depositRequest)).getPayload();
     }
 
     @RequestMapping(value = "/{applicantId}/paypallets/account/withdraw", method = RequestMethod.POST,
@@ -59,21 +59,21 @@ public class AccountController {
 
         validateUser(applicantId);
         validateAccount(applicantId);
-        return accountService.deposit(depositRequest);
+        return accountService.deposit(new ServiceRequest<>(depositRequest)).getPayload();
     }
 
     @RequestMapping(value = "/{applicantId}/paypallets/account/all", method = RequestMethod.GET)
     @ResponseBody
     public List<BankAccount> viewAllAccounts(@PathVariable("applicantId") String applicantId) {
 
-        return accountService.loadAllAccounts(applicantId);
+        return accountService.loadAllAccounts(new ServiceRequest<>(applicantId)).getPayload();
     }
 
     @RequestMapping(value = "/{applicantId}/paypallets/account/remove/{accountId}", method = RequestMethod.GET)
     @ResponseBody
     public Boolean removeAccount(@PathVariable("applicantId") String applicantId, @PathVariable("accountId") String accountId) {
 
-        accountService.removeAccount(accountId);
+        accountService.removeAccount(new ServiceRequest<>(accountId));
         return Boolean.TRUE;
     }
 
@@ -83,7 +83,7 @@ public class AccountController {
     public Price moneyExchange(@PathVariable("applicantId") String applicantId, @RequestBody CurrencyExchangeRequest exchangeRequest) {
 
         validateUser(applicantId);
-        return accountService.currencyExchange(exchangeRequest.getMonetaryAmount(), exchangeRequest.getTargetCurrency());
+        return accountService.exchangeCurrency(new ServiceRequest<>(exchangeRequest)).getPayload();
     }
 
     @RequestMapping(value = "/account/availableCurrency", method = RequestMethod.GET)

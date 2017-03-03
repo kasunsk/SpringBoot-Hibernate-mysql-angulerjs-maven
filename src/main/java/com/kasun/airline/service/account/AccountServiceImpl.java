@@ -1,16 +1,18 @@
 package com.kasun.airline.service.account;
 
-import com.kasun.airline.common.dto.Price;
+import com.kasun.airline.common.dto.*;
+import com.kasun.airline.common.dto.Void;
+import com.kasun.airline.common.service.RequestAssembler;
 import com.kasun.airline.dao.account.AccountDao;
-import com.kasun.airline.dto.account.AccountResponse;
 import com.kasun.airline.dto.account.DepositRequest;
+import com.kasun.airline.logic.account.*;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.dto.account.MoneyTransferRequest;
 import com.kasun.airline.model.account.Currency;
 import com.kasun.airline.service.user.UserService;
+import com.kasun.airline.util.CurrencyConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,117 +28,75 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     UserService userService;
 
-    @Transactional
+    @Autowired
+    private AccountCreateLogic accountCreateLogic;
+
+    @Autowired
+    private AccountDeleteLogic accountDeleteLogic;
+
+    @Autowired
+    private MoneyDepositLogic moneyDepositLogic;
+
+    @Autowired
+    private MoneyWithdrawLogic moneyWithdrawLogic;
+
+    @Autowired
+    private MoneyTransferLogic moneyTransferLogic;
+
+    @Autowired
+    private AllAccountsLoadingLogic allAccountsLoadingLogic;
+
+    @Autowired
+    private AccountRemoveLogic accountRemoveLogic;
+
+    @Autowired
+    private CurrencyExchangeLogic currencyExchangeLogic;
+
     @Override
-    public BankAccount createAccount(BankAccount bankAccount) {
+    public ServiceResponse<BankAccount> createAccount(ServiceRequest<BankAccount> bankAccount) {
 
-        validateAccount(bankAccount);
-        BankAccount account = accountHibernateDao.createAccount(bankAccount);
-        makeBankAccountResponse(account);
-        return account;
-    }
-
-    private void makeBankAccountResponse(BankAccount account) {
-
-        account.getUser().setUserBankAccounts(null);
-    }
-
-    private void validateAccount(BankAccount bankAccount) {
-        if (bankAccount.getAvailableAmount() == null) {
-            bankAccount.setAvailableAmount(0D);
-        }
-    }
-
-    @Transactional
-    @Override
-    public void deleteAccount(String accountNumber) {
-
-        BankAccount bankAccount = accountHibernateDao.loadAccountByAccountNumber(accountNumber);
-        accountHibernateDao.deleteAccount(bankAccount);
-    }
-
-    @Transactional
-    @Override
-    public BankAccount deposit(DepositRequest depositRequest) {
-
-        BankAccount account = accountHibernateDao.loadAccountByAccountNumber(depositRequest.getAccountId());
-        Double newBalance = account.getAvailableAmount() + depositRequest.getPrice().getPrice();
-        account.setAvailableAmount(newBalance);
-        accountHibernateDao.updateAccount(account);
-        return account;
-    }
-
-
-    @Transactional
-    @Override
-    public BankAccount withdraw(DepositRequest depositRequest) {
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public Boolean transferMoney(MoneyTransferRequest request) {
-
-        BankAccount bankAccount = accountHibernateDao.loadAccountByAccountNumber(request.getAccountNumber());
-        Double newAmount = 0d;
-
-        if (request.getTransferType().equals(MoneyTransferRequest.TransferType.DEPOSIT)) {
-            newAmount = bankAccount.getAvailableAmount() + request.getTransferAmount();
-
-        } else {
-            newAmount = bankAccount.getAvailableAmount() - request.getTransferAmount();
-        }
-
-        if (newAmount >= 0) {
-            bankAccount.setAvailableAmount(newAmount);
-        } else {
-            return false;
-        }
-
-        accountHibernateDao.updateAccount(bankAccount);
-        return true;
+        return RequestAssembler.assemble(accountCreateLogic, bankAccount);
     }
 
     @Override
-    @Transactional
-    public List<BankAccount> loadAllAccounts(String applicantId) {
-        return accountHibernateDao.loadAccountByApplicantId(applicantId);
-    }
+    public ServiceResponse<Void> deleteAccount(ServiceRequest<String> accountNumber) {
 
-    @Transactional
-    @Override
-    public void removeAccount(String accountId) {
-        accountHibernateDao.removeAccount(accountId);
+        return RequestAssembler.assemble(accountDeleteLogic, accountNumber);
     }
 
     @Override
-    public Price currencyExchange(Price amount, Currency toCurrency) {
+    public ServiceResponse<BankAccount> deposit(ServiceRequest<DepositRequest> depositRequest) {
 
-        Currency fromCurrencyCode = amount.getCurrency();
-        double conversionRate = CurrencyConverter.convert(fromCurrencyCode.toString(), toCurrency.toString());
-        double convertedAmount = conversionRate * amount.getPrice();
-        return buildConvertedPrice(toCurrency, convertedAmount);
+        return RequestAssembler.assemble(moneyDepositLogic, depositRequest);
     }
 
-    private Price buildConvertedPrice(Currency toCurrency, double convertedAmount) {
-        Price convertedPrice = new Price();
-        convertedPrice.setPrice(convertedAmount);
-        convertedPrice.setCurrency(toCurrency);
-        return convertedPrice;
+    @Override
+    public ServiceResponse<BankAccount> withdraw(ServiceRequest<DepositRequest> withdrawRequest) {
+
+        return RequestAssembler.assemble(moneyWithdrawLogic, withdrawRequest);
     }
 
-    private AccountResponse getAccountResponse(BankAccount acc) {
-        AccountResponse accountResponse = new AccountResponse();
-        accountResponse.setAccountId(acc.getAccountId().toString());
-        Price price = getPrice(acc);
-        accountResponse.setAvailableAmount(price);
-        return accountResponse;
+    @Override
+    public ServiceResponse<Boolean> transferMoney(ServiceRequest<MoneyTransferRequest> moneyTransferRequest) {
+
+        return RequestAssembler.assemble(moneyTransferLogic, moneyTransferRequest);
     }
 
-    private Price getPrice(BankAccount acc) {
-        Price price = new Price();
-        price.setCurrency(acc.getCurrency());
-        price.setPrice(acc.getAvailableAmount());
-        return price;
+    @Override
+    public ServiceResponse<List<BankAccount>> loadAllAccounts(ServiceRequest<String> applicantId) {
+
+        return RequestAssembler.assemble(allAccountsLoadingLogic, applicantId);
+    }
+
+    @Override
+    public ServiceResponse<Void> removeAccount(ServiceRequest<String> accountId) {
+
+        return RequestAssembler.assemble(accountRemoveLogic,accountId);
+    }
+
+    @Override
+    public ServiceResponse<Price> exchangeCurrency(ServiceRequest<CurrencyExchangeRequest> exchangeRequest) {
+
+        return RequestAssembler.assemble(currencyExchangeLogic,exchangeRequest);
     }
 }

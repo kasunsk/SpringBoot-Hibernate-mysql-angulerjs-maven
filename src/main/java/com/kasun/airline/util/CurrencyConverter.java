@@ -1,4 +1,4 @@
-package com.kasun.airline.service.account;
+package com.kasun.airline.util;
 
 import com.google.gson.Gson;
 import com.kasun.airline.common.execption.ErrorCode;
@@ -10,9 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
 
 /**
  * Created by kasun on 2/28/17.

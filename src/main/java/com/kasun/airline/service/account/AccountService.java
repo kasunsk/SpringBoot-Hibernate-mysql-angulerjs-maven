@@ -1,6 +1,7 @@
 package com.kasun.airline.service.account;
 
-import com.kasun.airline.common.dto.Price;
+import com.kasun.airline.common.dto.*;
+import com.kasun.airline.common.dto.Void;
 import com.kasun.airline.dto.account.DepositRequest;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.dto.account.MoneyTransferRequest;
@@ -13,19 +14,20 @@ import java.util.List;
  */
 public interface AccountService {
 
-    BankAccount createAccount(BankAccount bankAccount);
+    ServiceResponse<BankAccount> createAccount(ServiceRequest<BankAccount> bankAccount);
 
-    void deleteAccount(String accountNumber);
+    ServiceResponse<com.kasun.airline.common.dto.Void> deleteAccount(ServiceRequest<String> accountNumber);
 
-    BankAccount deposit(DepositRequest depositRequest);
+    ServiceResponse<BankAccount> deposit(ServiceRequest<DepositRequest> depositRequest);
 
-    BankAccount withdraw(DepositRequest depositRequest);
+    ServiceResponse<BankAccount> withdraw(ServiceRequest<DepositRequest> withdrawRequest);
 
-    Boolean transferMoney(MoneyTransferRequest moneyTransferRequest);
+    ServiceResponse<Boolean> transferMoney(ServiceRequest<MoneyTransferRequest> moneyTransferRequest);
 
-    List<BankAccount> loadAllAccounts(String applicantId);
+    ServiceResponse<List<BankAccount>> loadAllAccounts(ServiceRequest<String> applicantId);
 
-    void removeAccount(String accountId);
+    ServiceResponse<Void> removeAccount(ServiceRequest<String> accountId);
 
-    Price currencyExchange(Price amount, Currency toCurrency);
+    ServiceResponse<Price> exchangeCurrency(ServiceRequest<CurrencyExchangeRequest> exchangeRequest);
+
 }

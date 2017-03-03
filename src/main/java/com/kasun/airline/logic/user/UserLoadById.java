@@ -6,6 +6,8 @@ import com.kasun.airline.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 /**
  * Created by kasun on 3/3/17.
  */
@@ -15,6 +17,7 @@ public class UserLoadById extends StatelessServiceLogic<User, String> {
     @Autowired
     private UserDao userHibernateDao;
 
+    @Transactional
     @Override
     public User invoke(String applicantId) {
         return userHibernateDao.loadUserById(applicantId);

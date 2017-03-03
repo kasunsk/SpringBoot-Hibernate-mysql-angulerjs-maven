@@ -1,6 +1,8 @@
 package com.kasun.airline.logic.airline;
 
+import com.kasun.airline.common.dto.CurrencyExchangeRequest;
 import com.kasun.airline.common.dto.Price;
+import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.common.dto.UserTicketStatus;
 import com.kasun.airline.common.execption.ErrorCode;
 import com.kasun.airline.common.execption.ServiceRuntimeException;
@@ -9,6 +11,7 @@ import com.kasun.airline.dao.account.AccountDao;
 import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.dto.airline.TicketBuy;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
+import com.kasun.airline.logic.account.CurrencyExchangeLogic;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.model.account.Currency;
 import com.kasun.airline.model.airline.AirlineOfferModel;
@@ -74,7 +77,10 @@ public class AirlineTicketBuyingLogic extends StatelessServiceLogic<UserTicket, 
         price.setCurrency(airlineOffer.getCurrency());
 
         if (!airlineOffer.getCurrency().equals(accountCurrency)) {
-            price = accountService.currencyExchange(price, accountCurrency);
+            CurrencyExchangeRequest exchangeRequest = new CurrencyExchangeRequest();
+            exchangeRequest.setMonetaryAmount(price);
+            exchangeRequest.setTargetCurrency(accountCurrency);
+            price = accountService.exchangeCurrency(new ServiceRequest<>(exchangeRequest)).getPayload();
         }
         return price;
     }
