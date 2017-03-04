@@ -11,4 +11,5 @@ public interface ErrorCode {
     String ROUTE_ALREADY_EXIST = "Rout already exist";
     String CAN_NOT_CONVERT_CURRENCY = "Can not convert currency";
     String USER_NOT_FOUND = "User not found";
+    String EMAIL_SENDING_FAIL = "Email sending fail";
 }

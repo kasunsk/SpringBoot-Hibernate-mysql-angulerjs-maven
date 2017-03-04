@@ -93,8 +93,7 @@ public class AirlineController {
     @ResponseBody
     public Boolean sendUserTicketEmail(@PathVariable String userTicketId) {
 
-        airlineService.sendUserTicketEmail(new ServiceRequest<>(userTicketId));
-        return Boolean.TRUE;
+        return airlineService.sendUserTicketEmail(new ServiceRequest<>(userTicketId)).getPayload();
     }
 
     @RequestMapping(value = "/gammaairlines/email/send", method = RequestMethod.POST)

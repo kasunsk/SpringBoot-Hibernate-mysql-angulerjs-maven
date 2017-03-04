@@ -6,6 +6,7 @@ import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.common.service.StatelessServiceLogic;
 import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.dao.email.EmailDao;
+import com.kasun.airline.dto.email.EmailParam;
 import com.kasun.airline.model.email.EmailModel;
 import com.kasun.airline.model.user.User;
 import com.kasun.airline.model.user.UserTicket;
@@ -53,15 +54,23 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
         EmailModel emailModel = getEmailModel(emailBody, userEmail);
         EmailRequest emailRequest = getEmailRequest(emailBody, userEmail);
 
+        EmailParam emailParam = new EmailParam();
+        emailParam.setReceiverAddress(userEmail);
+        emailParam.setContent(emailBody);
+        emailParam.setSubject(USER_TICKET_MAIL_SUBJECT);
+
+        Boolean finalResult = Boolean.TRUE;
+
         try {
-            emailService.sendEmail(emailRequest);
+            emailService.sendEmail(new ServiceRequest<>(emailParam));
             emailModel.setStatus(EmailModel.EmailStatus.SENT);
         } catch (ServiceRuntimeException ex) {
-            logger.error("Email Sending Failed", ex);
+            logger.error("Email Sending Failed");
             emailModel.setStatus(EmailModel.EmailStatus.FAILED);
+            finalResult = Boolean.FALSE;
         }
         emailHibernateDao.saveEmailData(emailModel);
-        return Boolean.TRUE;
+        return finalResult;
     }
 
     private User getUser(String userId) {

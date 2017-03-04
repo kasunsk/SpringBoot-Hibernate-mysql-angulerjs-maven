@@ -1,6 +1,11 @@
 package com.kasun.airline.service.email;
 
 import com.kasun.airline.common.dto.EmailRequest;
+import com.kasun.airline.common.dto.ServiceRequest;
+import com.kasun.airline.common.dto.ServiceResponse;
+import com.kasun.airline.common.service.RequestAssembler;
+import com.kasun.airline.dto.email.EmailParam;
+import com.kasun.airline.logic.email.EmailSendLogic;
 import com.kasun.airline.util.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -15,6 +20,9 @@ import java.util.Properties;
  */
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
+
+    @Autowired
+    private EmailSendLogic emailSendLogic;
 
     @Autowired
     private Environment environment;
@@ -41,5 +49,11 @@ public class EmailServiceImpl implements EmailService {
      //   EmailUtil.sendEmail(session, emailRequest.getToEmail(), emailRequest.getSubject(), emailRequest.getBody());
 
         EmailUtil.send(session);
+    }
+
+    @Override
+    public ServiceResponse<Boolean> sendEmail(ServiceRequest<EmailParam> emailParam) {
+
+        return RequestAssembler.assemble(emailSendLogic, emailParam);
     }
 }
