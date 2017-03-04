@@ -52,25 +52,30 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
         String emailBody = getContent(userTicket, user);
         String userEmail = user.getEmail();
         EmailModel emailModel = getEmailModel(emailBody, userEmail);
-        EmailRequest emailRequest = getEmailRequest(emailBody, userEmail);
+        EmailParam emailParam = getEmailParam(emailBody, userEmail);
 
+        Boolean isMailSent;
+
+        try {
+            emailService.sendEmail(new ServiceRequest<>(emailParam));
+            logger.info("Email Sent Successfully");
+            emailModel.setStatus(EmailModel.EmailStatus.SENT);
+            isMailSent = Boolean.TRUE;
+        } catch (ServiceRuntimeException ex) {
+            logger.error("Email Sending Failed");
+            emailModel.setStatus(EmailModel.EmailStatus.FAILED);
+            isMailSent = Boolean.FALSE;
+        }
+        emailHibernateDao.saveEmailData(emailModel);
+        return isMailSent;
+    }
+
+    private EmailParam getEmailParam(String emailBody, String userEmail) {
         EmailParam emailParam = new EmailParam();
         emailParam.setReceiverAddress(userEmail);
         emailParam.setContent(emailBody);
         emailParam.setSubject(USER_TICKET_MAIL_SUBJECT);
-
-        Boolean finalResult = Boolean.TRUE;
-
-        try {
-            emailService.sendEmail(new ServiceRequest<>(emailParam));
-            emailModel.setStatus(EmailModel.EmailStatus.SENT);
-        } catch (ServiceRuntimeException ex) {
-            logger.error("Email Sending Failed");
-            emailModel.setStatus(EmailModel.EmailStatus.FAILED);
-            finalResult = Boolean.FALSE;
-        }
-        emailHibernateDao.saveEmailData(emailModel);
-        return finalResult;
+        return emailParam;
     }
 
     private User getUser(String userId) {
@@ -79,14 +84,6 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
 
     private UserTicket getUserTicket(String userTicketId) {
         return airlineHibernateDao.loadUserTicketById(Long.parseLong(userTicketId));
-    }
-
-    private EmailRequest getEmailRequest(String emailBody, String userEmail) {
-        EmailRequest emailRequest = new EmailRequest();
-        emailRequest.setBody(emailBody);
-        emailRequest.setToEmail(userEmail);
-        emailRequest.setSubject(USER_TICKET_MAIL_SUBJECT);
-        return emailRequest;
     }
 
     private EmailModel getEmailModel(String emailBody, String userEmail) {
@@ -101,12 +98,13 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
     private String getContent(UserTicket userTicket, User user) {
 
         StringBuilder mailBodyBuilder = new StringBuilder();
-        mailBodyBuilder.append("Name : ").append(user.getName());
-        mailBodyBuilder.append("User Ticket Id : ").append(userTicket.getId());
-        mailBodyBuilder.append("Origin : ").append(userTicket.getOrigin());
-        mailBodyBuilder.append("Destination : ").append(userTicket.getDestination());
-        mailBodyBuilder.append("Price ").append(userTicket.getPrice()).append(" ").append(userTicket.getCurrency());
-        mailBodyBuilder.append("Number of Tickets ").append(userTicket.getTicketsAmount());
+        mailBodyBuilder.append(" Passenger Name : ").append(user.getName());
+        mailBodyBuilder.append("\n User Ticket Id : ").append(userTicket.getId());
+        mailBodyBuilder.append("\n Origin : ").append(userTicket.getOrigin());
+        mailBodyBuilder.append("\n Destination : ").append(userTicket.getDestination());
+        mailBodyBuilder.append("\n Payment : ").append(userTicket.getPrice()).append(" ").append(userTicket.getCurrency());
+        mailBodyBuilder.append("\n Number of Tickets : ").append(userTicket.getTicketsAmount());
+        mailBodyBuilder.append("\n\n Thank You, Enjoy our service! ");
         return mailBodyBuilder.toString();
     }
 }

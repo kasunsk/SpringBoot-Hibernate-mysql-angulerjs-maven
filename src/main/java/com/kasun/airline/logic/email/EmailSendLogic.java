@@ -22,8 +22,6 @@ import java.util.Properties;
 @Component
 public class EmailSendLogic extends StatelessServiceLogic<Boolean, EmailParam> {
 
-    private static final Logger logger = LoggerFactory.getLogger(EmailSendLogic.class);
-
     @Autowired
     private Environment environment;
 
@@ -38,9 +36,33 @@ public class EmailSendLogic extends StatelessServiceLogic<Boolean, EmailParam> {
 
     @Override
     public Boolean invoke(EmailParam emailParam) {
-        String receiverEmail = emailParam.getReceiverAddress();
-        String emailSubject = emailParam.getSubject();
-        String emailBody = emailParam.getContent();
+
+        Properties props = getProperties();
+
+        try {
+            Authenticator auth = new SMTPAuthenticator();
+            Session session = Session.getInstance(props, auth);
+            Message emailMessage = buildEmailMessage(emailParam.getReceiverAddress(), emailParam.getSubject(), emailParam.getContent(),
+                    session);
+            Transport.send(emailMessage);
+        } catch (Exception ex) {
+            throw new ServiceRuntimeException(ErrorCode.EMAIL_SENDING_FAIL, ex.getMessage());
+        }
+
+        return Boolean.TRUE;
+    }
+
+    private Message buildEmailMessage(String receiverEmail, String emailSubject, String emailBody, Session session) throws MessagingException {
+        Message msg = new MimeMessage(session);
+        msg.setText(emailBody);
+        msg.setSubject(emailSubject);
+        msg.setFrom(new InternetAddress(senderEmail));
+        msg.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(receiverEmail));
+        return msg;
+    }
+
+    private Properties getProperties() {
 
         Properties props = new Properties();
         props.put("mail.smtp.user", senderEmail);
@@ -50,25 +72,7 @@ public class EmailSendLogic extends StatelessServiceLogic<Boolean, EmailParam> {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.socketFactory.port", environment.getRequiredProperty("email.server.port"));
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-
-        try {
-            Authenticator auth = new SMTPAuthenticator();
-            Session session = Session.getInstance(props, auth);
-
-            Message msg = new MimeMessage(session);
-            msg.setText(emailBody);
-            msg.setSubject(emailSubject);
-            msg.setFrom(new InternetAddress(senderEmail));
-            msg.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress(receiverEmail));
-            Transport.send(msg);
-            logger.info("Email sent successfully");
-        } catch (Exception ex) {
-            logger.error("Failed to send email");
-            throw new ServiceRuntimeException(ErrorCode.EMAIL_SENDING_FAIL, ex.getMessage());
-        }
-
-        return Boolean.TRUE;
+        return props;
     }
 
     private class SMTPAuthenticator extends javax.mail.Authenticator {
