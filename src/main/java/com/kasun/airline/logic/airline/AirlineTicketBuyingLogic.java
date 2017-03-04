@@ -24,7 +24,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 /**
- * Created by kasun on 3/2/17.
+ * This class provide logic of buying airline tickets
  */
 @Component
 public class AirlineTicketBuyingLogic extends StatelessServiceLogic<UserTicket, TicketBuy> {
@@ -90,7 +90,7 @@ public class AirlineTicketBuyingLogic extends StatelessServiceLogic<UserTicket, 
         BigDecimal payableAmount = BigDecimal.valueOf(price.getPrice()).multiply(new BigDecimal(ticketAmount));
 
         if (BigDecimal.valueOf(availableAmount).compareTo(payableAmount) == -1) {
-            throw new ServiceRuntimeException(ErrorCode.NOT_ENOUGH_CREDIT, "Credit not enough in given account");
+            throw new ServiceRuntimeException(ErrorCode.NOT_ENOUGH_CREDIT, "Account Credits not enough to purchase");
         }
 
         Price amount = new Price();

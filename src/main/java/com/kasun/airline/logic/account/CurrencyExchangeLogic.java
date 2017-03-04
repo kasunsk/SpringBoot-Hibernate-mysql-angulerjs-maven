@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
-/**
- * Created by kasun on 3/3/17.
- */
 @Component
 public class CurrencyExchangeLogic extends StatelessServiceLogic<Price, CurrencyExchangeRequest> {
 

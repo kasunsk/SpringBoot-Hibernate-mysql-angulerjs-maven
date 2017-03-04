@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
 /**
- * Created by kasun on 3/2/17.
+ * This class responsible for provide logic airline offer creating
  */
 @Component
 public class AirlineOfferCreateLogic extends StatelessServiceLogic<Void, AirlineOffer> {

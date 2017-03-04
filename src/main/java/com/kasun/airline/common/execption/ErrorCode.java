@@ -12,4 +12,5 @@ public interface ErrorCode {
     String CAN_NOT_CONVERT_CURRENCY = "Can not convert currency";
     String USER_NOT_FOUND = "User not found";
     String EMAIL_SENDING_FAIL = "Email sending fail";
+    String USER_ALREADY_EXIST = "User already exist";
 }

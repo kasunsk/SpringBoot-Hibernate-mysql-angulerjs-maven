@@ -1,5 +1,7 @@
 package com.kasun.airline.logic.user;
 
+import com.kasun.airline.common.execption.ErrorCode;
+import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.dao.user.UserDao;
 import com.kasun.airline.dto.user.LoginRequest;
 import com.kasun.airline.model.user.User;
@@ -20,7 +22,7 @@ public class UserLogicHelper {
         User user = userHibernateDao.loadUserByEmail(loginRequest.getEmail());
 
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new ServiceRuntimeException(ErrorCode.USER_NOT_FOUND, "User not found");
         }
         return user;
     }

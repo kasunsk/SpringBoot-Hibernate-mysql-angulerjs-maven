@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
 /**
- * Created by kasun on 3/3/17.
+ * This class is responsible for providing all the logic for bank account creation.
  */
 @Component
 public class AccountCreateLogic extends StatelessServiceLogic<BankAccount, BankAccount> {

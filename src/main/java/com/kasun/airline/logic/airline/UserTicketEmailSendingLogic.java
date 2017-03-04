@@ -1,6 +1,5 @@
 package com.kasun.airline.logic.airline;
 
-import com.kasun.airline.common.dto.EmailRequest;
 import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.common.service.StatelessServiceLogic;

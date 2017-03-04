@@ -5,8 +5,6 @@ import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.common.service.StatelessServiceLogic;
 import com.kasun.airline.dto.email.EmailParam;
 import org.springframework.core.env.Environment;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +14,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-/**
- * Created by kasun on 3/4/17.
- */
 @Component
 public class EmailSendLogic extends StatelessServiceLogic<Boolean, EmailParam> {
 

@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Created by kasun on 3/3/17.
- */
 @Component
 public class UserSearchLogic extends StatelessServiceLogic<List<User>, UserSearchCriteria> {
 

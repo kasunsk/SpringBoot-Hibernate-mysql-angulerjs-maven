@@ -1,5 +1,7 @@
 package com.kasun.airline.logic.user;
 
+import com.kasun.airline.common.execption.ErrorCode;
+import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.common.service.StatelessServiceLogic;
 import com.kasun.airline.dao.user.UserDao;
 import com.kasun.airline.dto.user.UserRole;
@@ -10,9 +12,6 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
-/**
- * Created by kasun on 3/3/17.
- */
 @Component
 public class UserSaveLogic extends StatelessServiceLogic<String, User> {
 
@@ -41,7 +40,7 @@ public class UserSaveLogic extends StatelessServiceLogic<String, User> {
         User currentUser = userHibernateDao.loadUserByEmail(user.getEmail());
 
         if (currentUser != null) {
-            throw new RuntimeException("User alredy available");
+            throw new ServiceRuntimeException(ErrorCode.USER_ALREADY_EXIST, "User already exist");
         }
     }
 }

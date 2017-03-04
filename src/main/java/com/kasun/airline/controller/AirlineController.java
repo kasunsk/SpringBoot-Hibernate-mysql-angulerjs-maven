@@ -6,6 +6,7 @@ import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.dto.airline.TicketBuy;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
+import com.kasun.airline.dto.email.EmailParam;
 import com.kasun.airline.model.airline.Airport;
 import com.kasun.airline.model.user.UserTicket;
 import com.kasun.airline.service.airline.AirlineService;
@@ -98,9 +99,9 @@ public class AirlineController {
 
     @RequestMapping(value = "/gammaairlines/email/send", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean sendEmail(@RequestBody EmailRequest emailRequest) {
+    public Boolean sendEmail(@RequestBody EmailParam emailParam) {
 
-        emailService.sendEmail(emailRequest);
+        emailService.sendEmail(new ServiceRequest<>(emailParam));
         return Boolean.TRUE;
     }
 

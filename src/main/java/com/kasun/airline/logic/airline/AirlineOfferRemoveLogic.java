@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
 /**
- * Created by kasun on 3/2/17.
+ * This logic class will provide airline offer remove functionality
  */
 @Component
 public class AirlineOfferRemoveLogic extends StatelessServiceLogic<Void, String> {
