@@ -13,9 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 
-/**
- * Created by kasun on 2/6/17.
- */
 public class AirlineServiceUnitTest {
 
     @InjectMocks
