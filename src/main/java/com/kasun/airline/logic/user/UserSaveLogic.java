@@ -46,7 +46,7 @@ public class UserSaveLogic extends StatelessServiceLogic<String, User> {
         user.setPassword(encryptedPassword);
     }
 
-    private void validateUser(User user) {
+    protected void validateUser(User user) {
 
         ValidationUtil.validate(user, "User can not be empty");
         ValidationUtil.validate(user.getEmail(), "Email can not be emplty");
