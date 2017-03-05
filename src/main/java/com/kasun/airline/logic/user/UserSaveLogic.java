@@ -1,16 +1,26 @@
 package com.kasun.airline.logic.user;
 
+import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.common.execption.ErrorCode;
 import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.common.service.StatelessServiceLogic;
 import com.kasun.airline.dao.user.UserDao;
 import com.kasun.airline.dto.user.UserRole;
 import com.kasun.airline.model.user.User;
+import com.kasun.airline.service.security.SecurityService;
 import com.kasun.airline.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.misc.BASE64Encoder;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 
 @Component
 public class UserSaveLogic extends StatelessServiceLogic<String, User> {
@@ -18,12 +28,22 @@ public class UserSaveLogic extends StatelessServiceLogic<String, User> {
     @Autowired
     private UserDao userHibernateDao;
 
+    @Autowired
+    private SecurityService securityService;
+
     @Transactional
     @Override
     public String invoke(User user) {
         validateUser(user);
+        encryptUserPassword(user);
         userHibernateDao.saveUser(user);
         return user.getName();
+    }
+
+    private void encryptUserPassword(User user) {
+
+        String encryptedPassword = securityService.encrypt(new ServiceRequest<>(user.getPassword())).getPayload();
+        user.setPassword(encryptedPassword);
     }
 
     private void validateUser(User user) {
