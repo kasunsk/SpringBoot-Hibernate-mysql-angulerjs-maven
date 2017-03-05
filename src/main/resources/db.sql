@@ -82,31 +82,31 @@ CREATE TABLE AIRPORTS (
     COUNTY VARCHAR(30) NOT NULL
 );
 
-insert into AIRPORTS values (1,"SHJ","Shaja","UA");
-insert into AIRPORTS values (2,"CMB", "Katunayaka", "Sri Lanka");
-insert into AIRPORTS values (3,"KUL", "Kuwalalampur","Malesiya");
+insert into AIRPORT values (1,"SHJ","Shaja","UA");
+insert into AIRPORT values (2,"CMB", "Katunayaka", "Sri Lanka");
+insert into AIRPORT values (3,"KUL", "Kuwalalampur","Malesiya");
 
-insert into AIRPORTS values (4,"AAU","Anchorage","USA");
-insert into AIRPORTS values (5,"ANC", "Katunayaka", "Sri Lanka");
-insert into AIRPORTS values (6,"AOI", "Ancona","Italy");
+insert into AIRPORT values (4,"AAU","Anchorage","USA");
+insert into AIRPORT values (5,"ANC", "Katunayaka", "Sri Lanka");
+insert into AIRPORT values (6,"AOI", "Ancona","Italy");
 
-insert into AIRPORTS values (7,"SLU","St. Lucia Vigle","Saint Lucia");
-insert into AIRPORTS values (8,"SGF", "Springfield (MO)", "USA");
-insert into AIRPORTS values (9,"ALV", "Andorra La Vella - Heliport","Andorra");
+insert into AIRPORT values (7,"SLU","St. Lucia Vigle","Saint Lucia");
+insert into AIRPORT values (8,"SGF", "Springfield (MO)", "USA");
+insert into AIRPORT values (9,"ALV", "Andorra La Vella - Heliport","Andorra");
 
-insert into AIRPORTS values (10,"AXA","Anguilla","Anguilla");
-insert into AIRPORTS values (11,"AAR", "Aarhus", "Denmark");
-insert into AIRPORTS values (12,"ABD", "Abadan","	Iran");
+insert into AIRPORT values (10,"AXA","Anguilla","Anguilla");
+insert into AIRPORT values (11,"AAR", "Aarhus", "Denmark");
+insert into AIRPORT values (12,"ABD", "Abadan","	Iran");
 
-insert into AIRPORTS values (13,"AER","Adler/Sochi","Russia");
-insert into AIRPORTS values (14,"AJY", "	Niger", "Agades");
-insert into AIRPORTS values (15,"DMK", "Bangkok, Don Muang","Thailand");
+insert into AIRPORT values (13,"AER","Adler/Sochi","Russia");
+insert into AIRPORT values (14,"AJY", "	Niger", "Agades");
+insert into AIRPORT values (15,"DMK", "Bangkok, Don Muang","Thailand");
 
-insert into AIRPORTS values (16,"BKK","Bangkok, Suvarnabhumi International","Thailand");
-insert into AIRPORTS values (17,"CED", "Ceduna", "Australia");
-insert into AIRPORTS values (18,"DAB", "Daytona Beach (FL)","	USA");
+insert into AIRPORT values (16,"BKK","Bangkok, Suvarnabhumi International","Thailand");
+insert into AIRPORT values (17,"CED", "Ceduna", "Australia");
+insert into AIRPORT values (18,"DAB", "Daytona Beach (FL)","	USA");
 
-insert into AIRPORTS values (19,"YEG","Edmonton, International","Canada");
-insert into AIRPORTS values (20,"EBB", "Entebbe - Entebbe International Airport", "Uganda");
-insert into AIRPORTS values (21,"ERZ", "Erzurum","Turkey");
+insert into AIRPORT values (19,"YEG","Edmonton, International","Canada");
+insert into AIRPORT values (20,"EBB", "Entebbe - Entebbe International Airport", "Uganda");
+insert into AIRPORT values (21,"ERZ", "Erzurum","Turkey");
 
