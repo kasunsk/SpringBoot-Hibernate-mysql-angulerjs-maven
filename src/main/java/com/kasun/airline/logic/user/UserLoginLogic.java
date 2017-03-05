@@ -23,7 +23,7 @@ public class UserLoginLogic extends StatelessServiceLogic<User, LoginRequest> {
     @Override
     public User invoke(LoginRequest loginRequest) {
 
-        User user = logicHelper.loadUser(loginRequest);
+        User user = logicHelper.loadUser(loginRequest.getEmail());
         validateLogin(loginRequest, user);
         user.setUserBankAccounts(null);
         return user;

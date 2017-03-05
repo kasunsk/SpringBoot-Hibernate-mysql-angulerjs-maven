@@ -17,9 +17,9 @@ public class UserLogicHelper {
     @Autowired
     private UserDao userHibernateDao;
 
-    protected User loadUser(LoginRequest loginRequest) {
+    protected User loadUser(String email) {
 
-        User user = userHibernateDao.loadUserByEmail(loginRequest.getEmail());
+        User user = userHibernateDao.loadUserByEmail(email);
 
         if (user == null) {
             throw new ServiceRuntimeException(ErrorCode.USER_NOT_FOUND, "User not found");
