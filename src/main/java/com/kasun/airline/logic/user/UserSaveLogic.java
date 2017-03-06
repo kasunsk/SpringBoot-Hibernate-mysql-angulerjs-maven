@@ -40,7 +40,7 @@ public class UserSaveLogic extends StatelessServiceLogic<String, User> {
         return user.getName();
     }
 
-    private void encryptUserPassword(User user) {
+    protected void encryptUserPassword(User user) {
 
         String encryptedPassword = securityService.encrypt(new ServiceRequest<>(user.getPassword())).getPayload();
         user.setPassword(encryptedPassword);
