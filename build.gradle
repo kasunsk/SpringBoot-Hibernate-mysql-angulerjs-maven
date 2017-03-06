@@ -4,15 +4,13 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.1.RELEASE")
-        classpath 'net.saliman:gradle-cobertura-plugin:2.0.0'
-
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'cobertura'
+apply plugin: "jacoco"
 apply plugin: 'org.springframework.boot'
 
 jar {
@@ -43,11 +41,16 @@ dependencies {
     testCompile("org.testng:testng:" + testngVersion)
 }
 
-cobertura {
-    coverageFormats = ['html', 'xml']
-    coverageIgnoreTrivial = true
-    coverageIgnores = ['org.slf4j.Logger.*']
-    coverageReportDir = new File("$buildDir/reports/cobertura")
+
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/reports/jacoco")
 }
 
-test.finalizedBy(project.tasks.cobertura)
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
