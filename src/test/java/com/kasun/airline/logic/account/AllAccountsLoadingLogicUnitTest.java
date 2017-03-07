@@ -56,4 +56,11 @@ public class AllAccountsLoadingLogicUnitTest {
         when(accountDao.loadAccountByApplicantId("applicantId")).thenReturn(accounts);
         assertEquals(accounts, logic.invoke("applicantId"));
     }
+
+    @Test
+    public void invokeNullTest() {
+
+        when(accountDao.loadAccountByApplicantId("applicantId")).thenReturn(null);
+        assertEquals(logic.invoke("applicantId").size(), 0);
+    }
 }
