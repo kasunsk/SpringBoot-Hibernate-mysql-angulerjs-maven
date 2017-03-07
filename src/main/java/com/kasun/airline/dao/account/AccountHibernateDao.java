@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by kasun on 2/4/17.
- */
 @Repository
 public class AccountHibernateDao extends AbstractDao<Long, BankAccount> implements AccountDao {
 
