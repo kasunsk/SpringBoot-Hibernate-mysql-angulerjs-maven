@@ -14,4 +14,5 @@ public interface ErrorCode {
     String EMAIL_SENDING_FAIL = "Email sending fail";
     String USER_ALREADY_EXIST = "User already exist";
     String INVALID_INPUT = "Invalid input";
+    String ACCOUNT_NOT_EXIST = "Account invalid";
 }

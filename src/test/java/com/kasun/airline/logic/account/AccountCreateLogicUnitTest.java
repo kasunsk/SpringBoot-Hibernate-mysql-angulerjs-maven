@@ -35,8 +35,6 @@ public class AccountCreateLogicUnitTest  {
 
     @Test
     public void invokeTest() {
-
-
         logic.invoke(new BankAccount());
     }
 }

@@ -27,7 +27,6 @@ targetCompatibility = javaVersion
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-test")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("mysql:mysql-connector-java")
     compile("com.sun.mail:javax.mail:" + javaxMailVersion)
@@ -38,6 +37,7 @@ dependencies {
     runtime("org.webjars.bower:angular-cookies:" + bowerVersion)
     runtime("org.webjars:angularjs-toaster:" + toasterVersion)
 
+    testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.testng:testng:" + testngVersion)
 }
 

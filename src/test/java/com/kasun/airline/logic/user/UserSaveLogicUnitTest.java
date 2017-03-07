@@ -63,7 +63,7 @@ public class UserSaveLogicUnitTest {
 
     @Test(expectedExceptions = ServiceRuntimeException.class)
     public void userAlreadyExistValidateTest() throws Exception {
-        User user = getComplitedUser();
+        User user = getCompletedUser();
 
         when(userHibernateDao.loadUserByEmail("test@email.com")).thenReturn(new User());
         userSaveLogic.validateUser(user);
@@ -72,7 +72,7 @@ public class UserSaveLogicUnitTest {
 
     @Test
     public void userAlreadyExistValidateSuccessTest() throws Exception {
-        User user = getComplitedUser();
+        User user = getCompletedUser();
         when(userHibernateDao.loadUserByEmail("test@email.com")).thenReturn(null);
 
         try {
@@ -80,14 +80,6 @@ public class UserSaveLogicUnitTest {
         } catch (ServiceRuntimeException ex) {
             fail();
         }
-    }
-
-    private User getComplitedUser() {
-        User user = new User();
-        user.setEmail("test@email.com");
-        user.setName("name");
-        user.setPassword("password");
-        return user;
     }
 
     @SuppressWarnings("unchecked")
@@ -102,9 +94,17 @@ public class UserSaveLogicUnitTest {
         assertEquals(user.getPassword(), "encryptedTest");
     }
 
+    private User getCompletedUser() {
+        User user = new User();
+        user.setEmail("test@email.com");
+        user.setName("name");
+        user.setPassword("password");
+        return user;
+    }
+
     @Test
     public void invokeTest() {
-        User user = getComplitedUser();
+        User user = getCompletedUser();
         when(userHibernateDao.loadUserByEmail("test@email.com")).thenReturn(null);
         ServiceResponse<String> response = new ServiceResponse<>();
         response.setPayload("encryptedTest");
