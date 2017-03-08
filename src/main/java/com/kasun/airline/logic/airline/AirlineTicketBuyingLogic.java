@@ -17,6 +17,7 @@ import com.kasun.airline.model.account.Currency;
 import com.kasun.airline.model.airline.AirlineOfferModel;
 import com.kasun.airline.model.user.UserTicket;
 import com.kasun.airline.service.account.AccountService;
+import com.kasun.airline.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,9 +46,13 @@ public class AirlineTicketBuyingLogic extends StatelessServiceLogic<UserTicket, 
     @Override
     public UserTicket invoke(TicketBuy request) {
 
+        validateTicketBuyingRequest(request);
         TicketBuyingRequest ticketBuyingRequest = request.getTicketBuyingRequest();
-
         BankAccount applicantBankAccount = accountDao.loadAccountById(Long.parseLong(ticketBuyingRequest.getAccountId()));
+
+        if (applicantBankAccount == null) {
+            throw new ServiceRuntimeException(ErrorCode.ACCOUNT_NOT_EXIST, "Invalid bank account");
+        }
         Double availableAmount = applicantBankAccount.getAvailableAmount();
         AirlineOfferModel airlineOffer = helper.loadOfferByRout(ticketBuyingRequest.getAirlineRout());
         validateAirlineOfferInventoryAvailability(airlineOffer, ticketBuyingRequest);
@@ -59,6 +64,16 @@ public class AirlineTicketBuyingLogic extends StatelessServiceLogic<UserTicket, 
         accountDao.saveUserTicket(userTicket);
         updateInventory(airlineOffer, ticketBuyingRequest);
         return userTicket;
+    }
+
+    private void validateTicketBuyingRequest(TicketBuy request) {
+
+        ValidationUtil.validate(request, "Request is null");
+        ValidationUtil.validate(request.getApplicantId(), "Applicant Id is null");
+        ValidationUtil.validate(request.getTicketBuyingRequest(), "Buying request is null");
+        ValidationUtil.validate(request.getTicketBuyingRequest().getAccountId(), "Account id is null");
+        ValidationUtil.validate(request.getTicketBuyingRequest().getAirlineRout(), "Route is null");
+        ValidationUtil.validate(request.getTicketBuyingRequest().getTicketAmount(), "Ticket amount is null");
     }
 
     private void validateAirlineOfferInventoryAvailability(AirlineOfferModel airlineOffer, TicketBuyingRequest request) {
