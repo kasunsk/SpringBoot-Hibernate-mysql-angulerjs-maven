@@ -11,6 +11,7 @@ import com.kasun.airline.model.user.User;
 import com.kasun.airline.model.user.UserTicket;
 import com.kasun.airline.service.email.EmailService;
 import com.kasun.airline.service.user.UserService;
+import com.kasun.airline.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,12 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
 
-/**
- * Created by kasun on 3/3/17.
- */
 @Component
 public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, String> {
 
     private static final Logger logger = LoggerFactory.getLogger(UserTicketEmailSendingLogic.class);
+
+    private static String USER_TICKET_MAIL_SUBJECT = "Ticket Details";
 
     @Autowired
     private EmailDao emailHibernateDao;
@@ -38,8 +38,6 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
 
     @Autowired
     private EmailService emailService;
-
-    private static String USER_TICKET_MAIL_SUBJECT = "Ticket Details";
 
     @Transactional
     @Override
@@ -78,10 +76,13 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
     }
 
     private User getUser(String userId) {
+
         return userService.loadUserById(new ServiceRequest<>(userId)).getPayload();
     }
 
     private UserTicket getUserTicket(String userTicketId) {
+
+        ValidationUtil.validate(userTicketId, "User ticket id is null");
         return airlineHibernateDao.loadUserTicketById(Long.parseLong(userTicketId));
     }
 
