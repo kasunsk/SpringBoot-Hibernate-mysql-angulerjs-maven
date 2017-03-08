@@ -3,6 +3,7 @@ package com.kasun.airline.logic.airline;
 import com.kasun.airline.common.service.StatelessServiceLogic;
 import com.kasun.airline.dao.airline.AirlineDao;
 import com.kasun.airline.model.user.UserTicket;
+import com.kasun.airline.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,8 @@ public class ApplicantTicketsRetrieveLogic extends StatelessServiceLogic<List<Us
     @Transactional
     @Override
     public List<UserTicket> invoke(String applicantId) {
+
+        ValidationUtil.validate(applicantId, "Applicant id is null");
         return airlineDao.loadApplicantAirlineOffers(Long.parseLong(applicantId));
     }
 }

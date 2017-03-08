@@ -1,6 +1,7 @@
 package com.kasun.airline.controller;
 
 import com.kasun.airline.common.dto.ServiceRequest;
+import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.dto.user.LoginRequest;
 import com.kasun.airline.dto.user.UserRole;
 import com.kasun.airline.common.dto.UserSearchCriteria;
@@ -32,17 +33,6 @@ public class UserController {
     @Autowired
     MessageSource messageSource;
 
-    /*
-   * This method will provide the medium to add a new user.
-   */
-    @RequestMapping(value = {"/new"}, method = RequestMethod.GET)
-    public String newUser(ModelMap model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        model.addAttribute("edit", false);
-        return "registration";
-    }
-
     @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     @ResponseBody
     public List<User> allUsers() {
@@ -72,7 +62,7 @@ public class UserController {
         User user = userService.loadUserById(new ServiceRequest<>(applicantId)).getPayload();
 
         if (user.getRole() != UserRole.ADMIN) {
-            throw new RuntimeException("User not have enough privileges");
+            throw new ServiceRuntimeException("User not have enough privileges");
         }
         return userService.searchUser(new ServiceRequest<>(searchCriteria)).getPayload();
     }
