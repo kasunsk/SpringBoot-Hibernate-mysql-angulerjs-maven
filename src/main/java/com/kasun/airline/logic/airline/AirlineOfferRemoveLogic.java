@@ -3,6 +3,7 @@ package com.kasun.airline.logic.airline;
 import com.kasun.airline.common.dto.Void;
 import com.kasun.airline.common.service.StatelessServiceLogic;
 import com.kasun.airline.dao.airline.AirlineDao;
+import com.kasun.airline.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,8 @@ public class AirlineOfferRemoveLogic extends StatelessServiceLogic<Void, String>
     @Transactional
     @Override
     public Void invoke(String offerId) {
+
+        ValidationUtil.validate(offerId, "Invalid offer id");
         airlineDao.remove(offerId);
         return new Void();
     }

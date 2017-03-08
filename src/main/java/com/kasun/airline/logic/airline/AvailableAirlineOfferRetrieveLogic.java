@@ -8,6 +8,7 @@ import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.OfferRequest;
 import com.kasun.airline.model.airline.AirlineOfferModel;
 import com.kasun.airline.service.user.UserService;
+import com.kasun.airline.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,21 +22,24 @@ public class AvailableAirlineOfferRetrieveLogic extends StatelessServiceLogic<Li
     private AirlineDao airlineDao;
 
     @Autowired
-    private UserService userService;
+    private AirlineOfferAdapter offerAdapter;
 
     @Autowired
-    private AirlineOfferAdapter offerAdapter;
+    private AirlineOfferLogicHelper logicHelper;
 
     @Transactional
     @Override
     public List<AirlineOffer> invoke(OfferRequest offerRequest) {
 
-        authenticateApplicant(offerRequest.getApplicantId());
+        validateOfferRequest(offerRequest);
+        logicHelper.authenticateApplicant(offerRequest.getApplicantId());
         List<AirlineOfferModel> offerList = airlineDao.loadAirlineOffers(offerRequest.getStatus());
         return offerAdapter.adaptFromModelList(offerList);
     }
 
-    private void authenticateApplicant(String applicantId) {
-        userService.authenticateUser(new ServiceRequest<>(applicantId));
+    private void validateOfferRequest(OfferRequest offerRequest) {
+
+        ValidationUtil.validate(offerRequest,"Invalid request");
+        ValidationUtil.validate(offerRequest.getApplicantId(), "Invalid applicant id");
     }
 }
