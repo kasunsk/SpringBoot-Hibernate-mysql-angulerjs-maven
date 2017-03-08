@@ -7,7 +7,6 @@ import com.kasun.airline.common.dto.ServiceResponse;
 import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.dao.account.AccountDao;
 import com.kasun.airline.dao.airline.AirlineDao;
-import com.kasun.airline.dto.airline.AirlineOffer;
 import com.kasun.airline.dto.airline.TicketBuy;
 import com.kasun.airline.dto.airline.TicketBuyingRequest;
 import com.kasun.airline.model.account.BankAccount;
