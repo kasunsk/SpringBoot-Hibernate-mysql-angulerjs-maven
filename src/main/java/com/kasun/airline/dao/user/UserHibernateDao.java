@@ -1,5 +1,7 @@
 package com.kasun.airline.dao.user;
 
+import com.kasun.airline.common.execption.ErrorCode;
+import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.dao.AbstractDao;
 import com.kasun.airline.common.dto.UserSearchCriteria;
 import com.kasun.airline.model.user.User;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by kasun on 1/28/17.
+ * This class provide hibernate dao implementation for UserDao
  */
 @Repository
 public class UserHibernateDao extends AbstractDao<Long, User> implements UserDao {
@@ -18,6 +20,7 @@ public class UserHibernateDao extends AbstractDao<Long, User> implements UserDao
         getSession().saveOrUpdate(user);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<User> allUsers() {
         Query query = getSession().createQuery("from User");
@@ -60,7 +63,7 @@ public class UserHibernateDao extends AbstractDao<Long, User> implements UserDao
         User user = loadUserById(userId);
 
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new ServiceRuntimeException(ErrorCode.USER_NOT_FOUND, "User not found");
         }
         getSession().delete(user);
     }
