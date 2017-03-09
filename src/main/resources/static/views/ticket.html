@@ -6,25 +6,44 @@
 </head>
 <body>
 <div class="section">
-    <h3>Ticket</h3>
+    <h3>E Ticket</h3>
+    <!--data-ng-init="getTicketDetail();-->
+    <div data-ng-init="init();">
 
-    <div>
-        <label>Ticket Number : {{userTicket.id}}</label>
-        <br>
-        <label>Origin : {{userTicket.origin}}</label>
-        <br>
-        <label>Destination : {{userTicket.destination}}</label>
-        <br>
-        <label>Price : {{userTicket.price}} {{userTicket.currency}}</label>
-        <br>
-        <label>Destination : {{userTicket.destination}}</label>
-        <br>
-        <label>Amount : {{userTicket.ticketsAmount}}</label>
-        <br>
-        <label>Status : {{userTicket.status}}</label>
-        <br>
-        <br>
-        <button class="btn btn-primary">Print</button> <button class="btn btn-primary">Email</button>
+        <table class="table">
+            <tr>
+                <td>Ticket Number :</td>
+                <td>{{userTicket.id}}</td>
+            </tr>
+            <tr>
+                <td>Price :</td>
+                <td>{{userTicket.price}} {{userTicket.currency}}</td>
+            </tr>
+            <tr>
+                <td>Origin :</td>
+                <td>{{userTicket.origin}}</td>
+            </tr>
+            <tr>
+                <td>Destination :</td>
+                <td>{{userTicket.destination}}</td>
+            </tr>
+            <tr>
+                <td>Amount :</td>
+                <td>{{userTicket.ticketsAmount}}</td>
+            </tr>
+            <tr>
+                <td>Status :</td>
+                <td>{{userTicket.status}}</td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="btn btn-primary">Print</button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" data-ng-click="emailTicket(userTicket.id);">Email</button>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 

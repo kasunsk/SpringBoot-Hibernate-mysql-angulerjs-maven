@@ -1,4 +1,5 @@
 app.controller('usersController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
+
     $scope.headingTitle = "User List";
     $scope.clicked = false;
 
@@ -78,8 +79,76 @@ app.controller('ticketController', ['$scope', '$http', '$cookies', '$window', fu
         } else {
             $scope.userTicket = $scope.usersTickets[idx];
         }
+
+        var jsonUserTicket = JSON.stringify($scope.userTicket);
+        $cookies.put("selectedTicket", jsonUserTicket);
+
         $window.location.href = '#/ticket';
     };
+}]);
+
+app.controller('ticketsController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
+    $scope.headingTitle = "My Tickets";
+
+    $scope.init = function () {
+        var userTicketObj = JSON.parse($cookies.get('selectedTicket'));
+        $scope.userTicket = userTicketObj;
+    };
+
+    var applicantId = $cookies.get('applicantId');
+
+    $scope.getMyTickets = function () {
+
+        var myTicketUrl = '/' + applicantId + '/gammaairlines/tickets';
+
+        $scope.submitting = true;
+        $http({
+            method: 'GET',
+            url: myTicketUrl
+        }).success(function (data) {
+            $scope.myTickets = data;
+
+        }).error(function (data, status) {
+            $scope.submitting = false;
+            if (status === 400)
+                $scope.badRequest = data;
+            else if (status === 409)
+                $scope.badRequest = 'The name is already used.';
+        });
+    };
+
+    $scope.viewTicket = function (idx) {
+
+        if ($scope.myTickets != null) {
+            $scope.userTicket = $scope.myTickets[idx];
+        } else {
+            $scope.userTicket = $scope.usersTickets[idx];
+        }
+
+        var jsonUserTicket = JSON.stringify($scope.userTicket);
+        $cookies.put("selectedTicket", jsonUserTicket);
+
+        $window.location.href = '#/ticket';
+    };
+
+    $scope.emailTicket = function(ticketId) {
+
+        var emailTicketUrl = '/gammaairlines/userTicket/email/send/' + ticketId;
+
+        $scope.submitting = true;
+        $http({
+            method: 'GET',
+            url: emailTicketUrl
+        }).success(function (data) {
+
+        }).error(function (data, status) {
+            $scope.submitting = false;
+            if (status === 400)
+                $scope.badRequest = data;
+            else if (status === 409)
+                $scope.badRequest = 'Email sending fail';
+        });
+    }
 }]);
 
 app.controller('loginController', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
@@ -378,6 +447,11 @@ app.controller('airlineOfferController', ['$scope', '$http', '$cookies', '$windo
         }).success(function (data) {
             $scope.submitting = false;
             $scope.userTicket = data;
+
+            var jsonUserTicket = JSON.stringify($scope.userTicket);
+            $cookies.put("selectedTicket", jsonUserTicket);
+
+            this.detail = data;
             $window.location.href = '#/ticket';
 
         }).error(function (data, status) {
@@ -491,7 +565,7 @@ app.controller('moneyExchangeController', ['$scope', '$http', '$cookies', '$wind
     var applicantId = $cookies.get('applicantId');
     var applicantRole = $cookies.get('applicantRole');
 
-    $scope.init = function() {
+    $scope.init = function () {
         $http({
             method: 'GET',
             url: '/account/availableCurrency'
@@ -509,14 +583,14 @@ app.controller('moneyExchangeController', ['$scope', '$http', '$cookies', '$wind
 
     $scope.exchangeRequest = {
 
-        monetaryAmount : {
-            price : null,
-            currency : null
+        monetaryAmount: {
+            price: null,
+            currency: null
         },
-        targetCurrency : null
+        targetCurrency: null
     };
 
-    $scope.exchange = function() {
+    $scope.exchange = function () {
 
         var currencyExchangeUrl = '/' + applicantId + '/moneyexchange/exchange';
 

@@ -27,7 +27,7 @@ app.config(function ($routeProvider) {
         })
         .when('/ticket', {
             templateUrl: '/views/ticket.html',
-            controller: 'ticketController'
+            controller: 'ticketsController'
         })
         .when('/usersTickets', {
             templateUrl: '/views/usersTickets.html',
