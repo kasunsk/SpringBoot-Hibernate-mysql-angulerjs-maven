@@ -20,6 +20,7 @@ public class UserAuthenticateLogic extends StatelessServiceLogic<Void, String> {
     @Transactional
     @Override
     public Void invoke(String applicantId) {
+
         User user = userHibernateDao.loadUserById(applicantId);
 
         if (user == null) {

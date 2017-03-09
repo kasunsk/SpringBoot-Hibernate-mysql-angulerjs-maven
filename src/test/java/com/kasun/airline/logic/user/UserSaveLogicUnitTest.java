@@ -4,6 +4,7 @@ import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.common.dto.ServiceResponse;
 import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.dao.user.UserDao;
+import com.kasun.airline.dto.user.UserRole;
 import com.kasun.airline.model.user.User;
 import com.kasun.airline.service.security.SecurityService;
 import org.mockito.InjectMocks;
@@ -64,6 +65,7 @@ public class UserSaveLogicUnitTest {
     @Test(expectedExceptions = ServiceRuntimeException.class)
     public void userAlreadyExistValidateTest() throws Exception {
         User user = getCompletedUser();
+        user.setRole(UserRole.ADMIN);
 
         when(userHibernateDao.loadUserByEmail("test@email.com")).thenReturn(new User());
         userSaveLogic.validateUser(user);
@@ -102,6 +104,7 @@ public class UserSaveLogicUnitTest {
         return user;
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void invokeTest() {
         User user = getCompletedUser();
