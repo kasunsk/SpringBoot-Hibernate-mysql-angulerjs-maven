@@ -67,7 +67,6 @@ public class CurrencyConverter {
         } catch (IOException ex) {
 
             logger.error(ex.getMessage(), ex);
-            //TODO add exception codes
             throw new ServiceRuntimeException(ErrorCode.CAN_NOT_CONVERT_CURRENCY, ex.getMessage());
         }
         return response;

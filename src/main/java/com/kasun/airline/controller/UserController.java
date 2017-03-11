@@ -51,7 +51,6 @@ public class UserController {
     @ResponseBody
     public User login(@RequestBody LoginRequest loginRequest) {
 
-        validateLoginRequest(loginRequest);
         return userService.login(new ServiceRequest<>(loginRequest)).getPayload();
     }
 
@@ -67,12 +66,6 @@ public class UserController {
         return userService.searchUser(new ServiceRequest<>(searchCriteria)).getPayload();
     }
 
-    private void validateLoginRequest(LoginRequest loginRequest) {
-
-        validate(loginRequest.getEmail(), "Email is empty");
-        validate(loginRequest.getPassword(), "Email is empty");
-    }
-
 
     @RequestMapping(value = {"/save"}, method = RequestMethod.POST)
     @ResponseBody
@@ -81,17 +74,4 @@ public class UserController {
         return Boolean.TRUE;
     }
 
-    @RequestMapping(value = {"/new"}, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result,
-                           ModelMap model) {
-
-        if (result.hasErrors()) {
-            return "registration";
-        }
-
-        userService.saveUser(new ServiceRequest<>(user));
-
-        model.addAttribute("success", "User " + user.getName() + " registered successfully");
-        return "success";
-    }
 }

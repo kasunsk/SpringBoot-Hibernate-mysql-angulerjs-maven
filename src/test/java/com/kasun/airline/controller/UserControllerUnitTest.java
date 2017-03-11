@@ -5,6 +5,7 @@ import com.kasun.airline.common.dto.ServiceRequest;
 import com.kasun.airline.common.dto.ServiceResponse;
 import com.kasun.airline.common.dto.UserSearchCriteria;
 import com.kasun.airline.common.execption.ServiceRuntimeException;
+import com.kasun.airline.dto.user.LoginRequest;
 import com.kasun.airline.dto.user.UserRole;
 import com.kasun.airline.model.user.User;
 import com.kasun.airline.service.user.UserService;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class UserControllerUnitTest {
 
@@ -79,6 +81,37 @@ public class UserControllerUnitTest {
         when(userService.searchUser(Matchers.<ServiceRequest>any())).thenReturn(userListResponse);
         UserSearchCriteria searchCriteria = new UserSearchCriteria();
         assertEquals(users, controller.searchUser("12", searchCriteria));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void saveUserTest() {
+
+        assertTrue(controller.saveUser(new User()));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void userLoginTest() {
+
+        ServiceResponse<User> response = new ServiceResponse<>();
+        User user = new User();
+        response.setPayload(user);
+        when(userService.login(Matchers.<ServiceRequest>any())).thenReturn(response);
+        LoginRequest loginRequest = new LoginRequest();
+        assertEquals(user, controller.login(loginRequest));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void allUsersTest() {
+
+        ServiceResponse<List<User>> response = new ServiceResponse<>();
+        List<User> users = new ArrayList<>();
+        users.add(new User());
+        response.setPayload(users);
+        when(userService.retrieveAllUsers(Matchers.<ServiceRequest>any())).thenReturn(response);
+        assertEquals(users, controller.allUsers());
     }
 
 
