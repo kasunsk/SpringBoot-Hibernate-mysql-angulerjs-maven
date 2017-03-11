@@ -2,6 +2,9 @@ package com.kasun.airline.logic.security;
 
 import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.common.service.StatelessServiceLogic;
+import com.kasun.airline.util.ValidationUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -26,6 +29,8 @@ import java.util.Base64;
 @Component
 public class DataEncryptLogic extends StatelessServiceLogic<String, String> {
 
+    private static final Logger logger = LoggerFactory.getLogger(DataEncryptLogic.class);
+
     private static SecretKeySpec secretKey;
     private static byte[] key;
 
@@ -34,6 +39,8 @@ public class DataEncryptLogic extends StatelessServiceLogic<String, String> {
 
     @Override
     public String invoke(String word) {
+
+        ValidationUtil.validate(word, "Input is empty");
         return encrypt(word, environment.getRequiredProperty("encrypt.secret.key"));
     }
 
@@ -44,9 +51,9 @@ public class DataEncryptLogic extends StatelessServiceLogic<String, String> {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
         } catch (Exception e) {
-            System.out.println("Error while encrypting: " + e.toString());
+            logger.error("Error while encrypting: " + e.toString());
+            throw new ServiceRuntimeException("Error occured while encrypting");
         }
-        return null;
     }
 
     public static void init(String myKey) {

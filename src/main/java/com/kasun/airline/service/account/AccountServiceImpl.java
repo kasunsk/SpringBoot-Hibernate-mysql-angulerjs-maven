@@ -32,9 +32,6 @@ public class AccountServiceImpl implements AccountService {
     private AccountCreateLogic accountCreateLogic;
 
     @Autowired
-    private AccountDeleteLogic accountDeleteLogic;
-
-    @Autowired
     private MoneyDepositLogic moneyDepositLogic;
 
     @Autowired
@@ -56,12 +53,6 @@ public class AccountServiceImpl implements AccountService {
     public ServiceResponse<BankAccount> createAccount(ServiceRequest<BankAccount> bankAccount) {
 
         return RequestAssembler.assemble(accountCreateLogic, bankAccount);
-    }
-
-    @Override
-    public ServiceResponse<Void> deleteAccount(ServiceRequest<String> accountNumber) {
-
-        return RequestAssembler.assemble(accountDeleteLogic, accountNumber);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.kasun.airline.common.execption.ServiceRuntimeException;
 import com.kasun.airline.dao.account.AccountHibernateDao;
 import com.kasun.airline.model.account.BankAccount;
 import com.kasun.airline.model.account.Currency;
+import com.kasun.airline.model.user.User;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -42,6 +43,19 @@ public class AccountCreateLogicUnitTest  {
 
         BankAccount bankAccount = new BankAccount();
         bankAccount.setCurrency(Currency.AUD);
+        when(accountHibernateDao.createAccount(bankAccount)).thenReturn(bankAccount);
+        BankAccount resultAccount = logic.invoke(bankAccount);
+        assertEquals(resultAccount, bankAccount);
+    }
+
+
+    @Test
+    public void invokeNotEmptyAvailableMoneyTest() {
+
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setCurrency(Currency.AUD);
+        bankAccount.setAvailableAmount(2000D);
+        bankAccount.setUser(new User());
         when(accountHibernateDao.createAccount(bankAccount)).thenReturn(bankAccount);
         BankAccount resultAccount = logic.invoke(bankAccount);
         assertEquals(resultAccount, bankAccount);

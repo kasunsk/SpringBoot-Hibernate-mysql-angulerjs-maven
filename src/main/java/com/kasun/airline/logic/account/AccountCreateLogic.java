@@ -24,7 +24,7 @@ public class AccountCreateLogic extends StatelessServiceLogic<BankAccount, BankA
         validateAccount(bankAccount);
         BankAccount account = accountHibernateDao.createAccount(bankAccount);
 
-        if (account != null && account.getUser() != null) {
+        if (account.getUser() != null) {
             account.getUser().setUserBankAccounts(null);
         }
         return account;

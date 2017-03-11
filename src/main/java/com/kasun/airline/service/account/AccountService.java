@@ -23,13 +23,6 @@ public interface AccountService {
 
     /**
      *
-     * @param accountNumber
-     * @return void response
-     */
-    ServiceResponse<com.kasun.airline.common.dto.Void> deleteAccount(ServiceRequest<String> accountNumber);
-
-    /**
-     *
      * @param depositRequest
      * @return updated BankAccount
      */
