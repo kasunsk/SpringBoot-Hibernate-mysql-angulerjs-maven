@@ -48,9 +48,6 @@ public class AccountHibernateDao extends AbstractDao<Long, BankAccount> implemen
     @Override
     public void removeAccount(String accountId) {
 
-        //BankAccount account = loadAccountByAccountNumber(accountId);
-        //getSession().delete(account);
-
         Query query = getSession().createSQLQuery("delete from BANK_ACCOUNT where ID=:accountId");
         query.setParameter("accountId", accountId);
         query.executeUpdate();
