@@ -18,13 +18,17 @@ public class AirlineOfferAdapter {
 
     public AirlineOfferModel adaptFromDto(AirlineOffer airlineOffer){
 
-        AirlineOfferModel airlineOfferModel = new AirlineOfferModel();
-        airlineOfferModel.setOrigin(airlineOffer.getRoute().getFrom());
-        airlineOfferModel.setDestination(airlineOffer.getRoute().getTo());
-        airlineOfferModel.setPrice(airlineOffer.getPrice().getPrice());
-        airlineOfferModel.setCurrency(airlineOffer.getPrice().getCurrency());
-        airlineOfferModel.setStatus(AirlineOffer.AirlineOfferStatus.AVAILABLE);
-        airlineOfferModel.setAvailbaleInventory(airlineOffer.getAvailableInventory());
+        AirlineOfferModel airlineOfferModel = null;
+
+        if (airlineOffer != null) {
+            airlineOfferModel = new AirlineOfferModel();
+            airlineOfferModel.setOrigin(airlineOffer.getRoute().getFrom());
+            airlineOfferModel.setDestination(airlineOffer.getRoute().getTo());
+            airlineOfferModel.setPrice(airlineOffer.getPrice().getPrice());
+            airlineOfferModel.setCurrency(airlineOffer.getPrice().getCurrency());
+            airlineOfferModel.setStatus(AirlineOffer.AirlineOfferStatus.AVAILABLE);
+            airlineOfferModel.setAvailbaleInventory(airlineOffer.getAvailableInventory());
+        }
         return airlineOfferModel;
     }
 
@@ -33,7 +37,7 @@ public class AirlineOfferAdapter {
         return offerList.stream().map(this::adaptFromModel).collect(Collectors.toList());
     }
 
-    private AirlineOffer adaptFromModel(AirlineOfferModel offerModel) {
+    public AirlineOffer adaptFromModel(AirlineOfferModel offerModel) {
 
         AirlineOffer airlineOffer = new AirlineOffer();
 
