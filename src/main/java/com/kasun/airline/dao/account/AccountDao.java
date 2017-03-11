@@ -14,8 +14,6 @@ public interface AccountDao {
 
     BankAccount loadAccountById(Long accountId);
 
-    BankAccount loadAccountByAccountNumber(String accountNumber);
-
     void updateAccount(BankAccount applicantBankAccount);
 
     BankAccount createAccount(BankAccount bankAccount);

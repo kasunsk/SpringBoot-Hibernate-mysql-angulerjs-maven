@@ -17,8 +17,8 @@ public class AccountDeleteLogic extends StatelessServiceLogic<com.kasun.airline.
 
     @Transactional
     @Override
-    public Void invoke(String accountNumber) {
-        BankAccount bankAccount = accountHibernateDao.loadAccountByAccountNumber(accountNumber);
+    public Void invoke(String accountId) {
+        BankAccount bankAccount = accountHibernateDao.loadAccountById(Long.parseLong(accountId));
         accountHibernateDao.deleteAccount(bankAccount);
         return new Void();
     }

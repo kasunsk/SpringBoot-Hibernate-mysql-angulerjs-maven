@@ -1,8 +1,8 @@
 package com.kasun.airline.dto.account;
 
-/**
- * Created by kasun on 2/4/17.
- */
+
+import com.kasun.airline.model.account.Currency;
+
 public class MoneyTransferRequest {
 
     public enum TransferType {
@@ -11,6 +11,7 @@ public class MoneyTransferRequest {
 
     private String accountNumber;
     private Double transferAmount;
+    private Currency currency;
     private TransferType transferType;
 
     public String getAccountNumber() {
@@ -27,6 +28,14 @@ public class MoneyTransferRequest {
 
     public void setTransferAmount(Double transferAmount) {
         this.transferAmount = transferAmount;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public TransferType getTransferType() {

@@ -78,7 +78,7 @@ public class MoneyDepositLogicUnitTest {
     public void getNewBalanceFailTest() {
 
         DepositRequest request = getDepositRequest();
-        when(accountHibernateDao.loadAccountByAccountNumber("test")).thenReturn(null);
+        when(accountHibernateDao.loadAccountById(12L)).thenReturn(null);
         logic.invoke(request);
     }
 
@@ -87,7 +87,7 @@ public class MoneyDepositLogicUnitTest {
     public void invokeTest() {
         BankAccount bankAccount = getBankAccount();
 
-        when(accountHibernateDao.loadAccountByAccountNumber("test")).thenReturn(bankAccount);
+        when(accountHibernateDao.loadAccountById(12L)).thenReturn(bankAccount);
 
         DepositRequest depositRequest = getDepositRequest();
         BankAccount account = logic.invoke(depositRequest);
@@ -102,7 +102,7 @@ public class MoneyDepositLogicUnitTest {
         bankAccount.setCurrency(Currency.USD);
         DepositRequest depositRequest = getDepositRequest();
 
-        when(accountHibernateDao.loadAccountByAccountNumber("test")).thenReturn(bankAccount);
+        when(accountHibernateDao.loadAccountById(12L)).thenReturn(bankAccount);
 
         ServiceResponse<Price> response = getDifferenceCurrencyPriceResponse();
         when(accountService.exchangeCurrency(any())).thenReturn(response);
@@ -130,7 +130,7 @@ public class MoneyDepositLogicUnitTest {
 
     private DepositRequest getDepositRequest() {
         DepositRequest request = new DepositRequest();
-        request.setAccountId("test");
+        request.setAccountId("12");
         Price price = new Price();
         price.setCurrency(Currency.AUD);
         price.setPrice(200D);

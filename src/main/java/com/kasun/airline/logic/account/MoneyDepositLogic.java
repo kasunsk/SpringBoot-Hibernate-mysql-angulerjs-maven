@@ -31,7 +31,7 @@ public class MoneyDepositLogic extends StatelessServiceLogic<BankAccount, Deposi
     public BankAccount invoke(DepositRequest depositRequest) {
 
         validate(depositRequest);
-        BankAccount account = accountHibernateDao.loadAccountByAccountNumber(depositRequest.getAccountId());
+        BankAccount account = accountHibernateDao.loadAccountById(Long.parseLong(depositRequest.getAccountId()));
         Double newBalance = getNewBalance(depositRequest, account);
         account.setAvailableAmount(newBalance);
         accountHibernateDao.updateAccount(account);

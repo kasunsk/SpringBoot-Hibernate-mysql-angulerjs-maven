@@ -26,13 +26,6 @@ public class AccountHibernateDao extends AbstractDao<Long, BankAccount> implemen
         return (BankAccount) query.uniqueResult();
     }
 
-    public BankAccount loadAccountByAccountNumber(String accountNumber) {
-
-        Query query = getSession().createQuery("from BankAccount where accountId=:accountId");
-        query.setParameter("accountId", Long.parseLong(accountNumber));
-        return (BankAccount) query.uniqueResult();
-    }
-
     public void updateAccount(BankAccount applicantBankAccount) {
 
         getSession().update(applicantBankAccount);
