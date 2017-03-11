@@ -30,15 +30,11 @@ public class AirlineController {
     private AirlineService airlineService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private EmailService emailService;
 
     @RequestMapping(value = "/{applicantId}/gammaairlines/offers", method = RequestMethod.GET)
     @ResponseBody
-    public List<AirlineOffer> retrieveAvailableOffers(@PathVariable("applicantId") String applicantId,
-                                                      ModelMap model) {
+    public List<AirlineOffer> retrieveAvailableOffers(@PathVariable("applicantId") String applicantId) {
         OfferRequest offerRequest = new OfferRequest();
         offerRequest.setApplicantId(applicantId);
         ServiceResponse<List<AirlineOffer>> response = airlineService.retrieveAvailableAirlineOffers(new ServiceRequest<>(offerRequest));
@@ -65,9 +61,8 @@ public class AirlineController {
     @RequestMapping(value = "/{applicantId}/gammaairlines/offers/buy", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public UserTicket buyAOffer(@PathVariable("applicantId") String applicantId, @RequestBody TicketBuyingRequest buyingRequest) {
+    public UserTicket buyOffer(@PathVariable("applicantId") String applicantId, @RequestBody TicketBuyingRequest buyingRequest) {
 
-        validateUser(applicantId);
         TicketBuy ticketBuy = new TicketBuy();
         ticketBuy.setTicketBuyingRequest(buyingRequest);
         ticketBuy.setApplicantId(applicantId);
@@ -77,14 +72,14 @@ public class AirlineController {
 
     @RequestMapping(value = "/gammaairlines/country/all", method = RequestMethod.GET)
     @ResponseBody
-    public List<Airport> loadAllCountries() {
+    public List<Airport> loadAllAirports() {
 
         return airlineService.loadAllAirports(new ServiceRequest<>(new Void())).getPayload();
     }
 
     @RequestMapping(value = "/gammaairlines/offer/remove/{offerId}", method = RequestMethod.GET)
     @ResponseBody
-    public Boolean loadAllCountries(@PathVariable("offerId") String offerId) {
+    public Boolean removeOffer(@PathVariable("offerId") String offerId) {
 
         airlineService.removeAirlineOffer(new ServiceRequest<>(offerId));
         return Boolean.TRUE;
@@ -109,14 +104,8 @@ public class AirlineController {
     @ResponseBody
     public List<UserTicket> loadUsersTickers(@PathVariable("applicantId") String applicantId, @PathVariable("userId") String userId) {
 
-        validateUser(applicantId);
         return airlineService.retrieveApplicantTickets(new ServiceRequest<>(userId)).getPayload();
     }
 
-
-    private void validateUser(String applicantId) {
-
-        userService.authenticateUser(new ServiceRequest<>(applicantId));
-    }
 
 }
