@@ -11,10 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by kasun on 2/4/17.
- */
-@Repository
+
+@Repository("airlineHibernateDao")
 public class AirlineHibernateDao extends AbstractDao<Long, AirlineOfferModel> implements AirlineDao {
 
     public void saveAirlineOffer(AirlineOfferModel airlineOffer) {
@@ -25,7 +23,7 @@ public class AirlineHibernateDao extends AbstractDao<Long, AirlineOfferModel> im
     public List<AirlineOfferModel> loadAirlineOffers(AirlineOffer.AirlineOfferStatus airlineOfferStatus) {
 
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("from AirlineOfferModel AM ");
+        queryBuilder.append("from AirlineOfferModel AM");
 
         if (airlineOfferStatus != null) {
             queryBuilder.append(" WHERE ");
