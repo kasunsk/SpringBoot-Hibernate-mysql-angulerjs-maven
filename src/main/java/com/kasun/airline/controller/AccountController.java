@@ -37,7 +37,6 @@ public class AccountController {
     @ResponseBody
     public BankAccount createAccount(@PathVariable("applicantId") String applicantId, @RequestBody AccountRequest accountRequest) {
 
-        validateUser(applicantId);
         BankAccount bankAccount = buildAccountCreateRequest(applicantId, accountRequest);
         return accountService.createAccount(new ServiceRequest<>(bankAccount)).getPayload();
     }
@@ -48,7 +47,6 @@ public class AccountController {
     public BankAccount deposits(@PathVariable("applicantId") String applicantId, @RequestBody DepositRequest depositRequest) {
 
         validateUser(applicantId);
-        validateAccount(applicantId);
         return accountService.deposit(new ServiceRequest<>(depositRequest)).getPayload();
     }
 
@@ -58,8 +56,7 @@ public class AccountController {
     public BankAccount withdraw(@PathVariable("applicantId") String applicantId, @RequestBody DepositRequest depositRequest) {
 
         validateUser(applicantId);
-        validateAccount(applicantId);
-        return accountService.deposit(new ServiceRequest<>(depositRequest)).getPayload();
+        return accountService.withdraw(new ServiceRequest<>(depositRequest)).getPayload();
     }
 
     @RequestMapping(value = "/{applicantId}/paypallets/account/all", method = RequestMethod.GET)
@@ -90,10 +87,6 @@ public class AccountController {
     @ResponseBody
     public Set<Currency> availableCurrency() {
         return EnumSet.allOf(Currency.class);
-    }
-
-    private void validateAccount(String applicantId) {
-
     }
 
     private void validateUser(String applicantId) {
