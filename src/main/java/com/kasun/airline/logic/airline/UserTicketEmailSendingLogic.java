@@ -67,23 +67,14 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
         return isMailSent;
     }
 
-    private EmailParam getEmailParam(String emailBody, String userEmail) {
-        EmailParam emailParam = new EmailParam();
-        emailParam.setReceiverAddress(userEmail);
-        emailParam.setContent(emailBody);
-        emailParam.setSubject(USER_TICKET_MAIL_SUBJECT);
-        return emailParam;
-    }
-
-    private User getUser(String userId) {
-
-        return userService.loadUserById(new ServiceRequest<>(userId)).getPayload();
-    }
-
     private UserTicket getUserTicket(String userTicketId) {
 
         ValidationUtil.validate(userTicketId, "User ticket id is null");
         return airlineHibernateDao.loadUserTicketById(Long.parseLong(userTicketId));
+    }
+
+    private User getUser(String userId) {
+        return userService.loadUserById(new ServiceRequest<>(userId)).getPayload();
     }
 
     private EmailModel getEmailModel(String emailBody, String userEmail) {
@@ -93,6 +84,14 @@ public class UserTicketEmailSendingLogic extends StatelessServiceLogic<Boolean, 
         emailModel.setStatus(EmailModel.EmailStatus.SENDING);
         emailModel.setContent(emailBody);
         return emailModel;
+    }
+
+    private EmailParam getEmailParam(String emailBody, String userEmail) {
+        EmailParam emailParam = new EmailParam();
+        emailParam.setReceiverAddress(userEmail);
+        emailParam.setContent(emailBody);
+        emailParam.setSubject(USER_TICKET_MAIL_SUBJECT);
+        return emailParam;
     }
 
     private String getContent(UserTicket userTicket, User user) {
